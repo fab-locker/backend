@@ -29,7 +29,7 @@ export class MqttService {
       console.log('Received message:', topic, message.toString());
     });
 
-    this.client.subscribe('my/test/topic');
+    this.client.subscribe('locker/open');
   }
 
   publishMessage(topic: string, message: string): void {
