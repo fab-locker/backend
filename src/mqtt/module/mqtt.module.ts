@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MqttService } from '../services/mqtt.service';
+import { MqttService } from '../service/mqtt.service';
 
 @Module({
   providers: [MqttService],

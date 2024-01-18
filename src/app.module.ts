@@ -3,8 +3,8 @@ import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {LockersModule} from './lockers/module/lockers.module';
-import {MqttController} from "./mqtt/controllers/mqtt.controller";
-import {MqttModule} from "./mqtt/modules/mqtt.module";
+import {MqttController} from "./mqtt/controller/mqtt.controller";
+import {MqttModule} from "./mqtt/module/mqtt.module";
 import {ConfigModule} from '@nestjs/config';
 
 @Module({
