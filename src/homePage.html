@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fablocker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #18002d;
+            color: #594F62;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #8256A0;
+            font-family: monospace;
+            color: #F5F3F7;
+            text-align: center;
+            padding: 1em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        header h1 {
+            color: #ffc000;
+        }
+
+        .endpoints * {
+            flex-grow: 1;
+            margin: 5px;
+        }
+
+        .endpoint {
+            background-color: #8256A0;
+            color: #F5F3F7;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h2 {
+            color: #ffc000;
+            font-size: 1.5em;
+            font-family: monospace;
+        }
+
+        h3 {
+            color: #e5a800;
+            font-size: 1.2em;
+            font-family: monospace;
+        }
+
+        .description {
+            margin-bottom: 15px;
+        }
+
+        .category_title {
+            color: #ffc000;
+            font-size: 1.5em;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        .category_description {
+            color: #F5F3F7;
+            font-size: 1.2em;
+            font-family: monospace;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>Fablocker</h1>
+    <div class="description">
+        <p>
+            Welcome to Fablocker API documentation.
+        </p>
+        <p>
+            Find below the list of available endpoints to interact with the lockers.
+        </p>
+    </div>
+</header>
+<div class="category">
+    <p class="category_title"> Swagger </p>
+    <div class="category_description">
+        <p>API Documentation </p>
+        <p>
+            <button onclick="window.location.href = '/api';">Swagger</button>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

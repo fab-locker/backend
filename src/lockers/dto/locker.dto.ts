@@ -1,9 +1,13 @@
-import { IsNumber } from 'class-validator';
+import {IsNumber} from 'class-validator';
+import {ApiProperty} from "@nestjs/swagger";
 
 export class LockerDto {
-  @IsNumber()
-  id: number;
 
-  @IsNumber()
-  id_objet: number;
+    @ApiProperty()
+    @IsNumber()
+    id: number;
+
+    @ApiProperty()
+    @IsNumber()
+    id_objet: number;
 }
