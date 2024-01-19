@@ -1,10 +1,10 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('lockers')
 export class LockerEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({nullable: true})
-    id_objet: number;
+  @Column({ nullable: true })
+  id_objet: number;
 }
