@@ -2,9 +2,9 @@ import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {LockersModule} from './lockers/module/lockers.module';
+import {LockersModule} from './lockers/lockers.module';
 import {MqttController} from "./mqtt/controller/mqtt.controller";
-import {MqttModule} from "./mqtt/module/mqtt.module";
+import {MqttModule} from "./mqtt/mqtt.module";
 import {ConfigModule} from '@nestjs/config';
 
 @Module({
