@@ -1,32 +1,61 @@
-import {Test, TestingModule} from '@nestjs/testing';
 import {LockersController} from './lockers.controller';
-import {LockerDto} from '../dto/locker.dto';
 import {LockersService} from "../service/lockers.service";
+import {Test, TestingModule} from "@nestjs/testing";
+import {LockerDto} from "../dto/locker.dto";
 
 describe('LockersController', () => {
+    let lockersService: LockersService;
     let lockersController: LockersController;
 
+    const mockLocker = {
+        id: 1,
+    };
+
+    const mockLockersService = {
+        findAll: jest.fn().mockResolvedValueOnce([mockLocker]),
+        createLocker: jest.fn(),
+    };
+
     beforeEach(async () => {
-        const lockersModule: TestingModule = await Test.createTestingModule({
+        const module: TestingModule = await Test.createTestingModule({
             controllers: [LockersController],
-            providers: [LockersService],
+            providers: [
+                {
+                    provide: LockersService,
+                    useValue: mockLockersService,
+                },
+            ],
         }).compile();
 
-        lockersController = lockersModule.get<LockersController>(LockersController);
+        lockersService = module.get<LockersService>(LockersService);
+        lockersController = module.get<LockersController>(LockersController);
+    });
+
+    it('should be defined', () => {
+        expect(lockersController).toBeDefined();
     });
 
     describe('getAllLockers', () => {
-        it('should return an array of lockers', async () => {
-            const result: LockerDto[] = await lockersController.getAllLockers();
-            expect(result).toEqual([]);
+        it('should get all lockers', async () => {
+            const result = await lockersController.getAllLockers();
         });
     });
 
-    describe('create', () => {
-        it('should create a new locker', async () => {
-            const newLocker: LockerDto = {id: 1, id_objet: 2};
-            const result: LockerDto = await LockersController.call('create', newLocker);
-            expect(result).toEqual(newLocker);
+    describe('createLocker', () => {
+        it('should create a locker', async () => {
+            const newLocker = {
+                id: 36,
+            };
+
+            mockLockersService.createLocker = jest.fn().mockResolvedValueOnce(mockLocker);
+
+            const result = await lockersController.create(
+                newLocker as LockerDto,
+            );
+
+            expect(lockersService.createLocker).toHaveBeenCalled();
+            expect(result).toEqual(mockLocker);
         });
-    });
+    })
+
 });

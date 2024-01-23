@@ -54,7 +54,7 @@ describe('LockersService', () => {
     describe('findOne', () => {
         it('should return a single locker by ID', async () => {
             const lockerId = 1;
-            const mockLocker: LockerEntity = {id: lockerId, id_objet: 2};
+            const mockLocker: LockerEntity = {id: lockerId};
             jest
                 .spyOn(repository, 'findOne')
                 .mockImplementation(() => Promise.resolve(mockLocker));
@@ -66,7 +66,7 @@ describe('LockersService', () => {
 
     describe('createLocker', () => {
         it('should create a new locker', async () => {
-            const newLockerData: LockerDto = {id: 1, id_objet: 2};
+            const newLockerData: LockerDto = {id: 1};
             jest
                 .spyOn(repository, 'save')
                 .mockImplementation(() => Promise.resolve(newLockerData));

@@ -6,8 +6,4 @@ export class LockerDto {
     @ApiProperty()
     @IsNumber()
     id: number;
-
-    @ApiProperty()
-    @IsNumber()
-    id_objet: number;
 }
