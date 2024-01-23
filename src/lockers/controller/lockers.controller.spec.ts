@@ -53,7 +53,7 @@ describe('LockersController', () => {
                 newLocker as LockerDto,
             );
 
-            expect(lockersService.createLocker).toHaveBeenCalled();
+            expect(lockersService.create).toHaveBeenCalled();
             expect(result).toEqual(mockLocker);
         });
     })

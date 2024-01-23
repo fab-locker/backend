@@ -71,7 +71,7 @@ describe('LockersService', () => {
                 .spyOn(repository, 'save')
                 .mockImplementation(() => Promise.resolve(newLockerData));
 
-            const result: LockerDto = await service.createLocker(newLockerData);
+            const result: LockerDto = await service.create(newLockerData);
             expect(result).toEqual(newLockerData);
         });
     });

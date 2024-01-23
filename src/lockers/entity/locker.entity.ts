@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity('lockers')
 export class LockerEntity {
