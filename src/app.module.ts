@@ -11,7 +11,7 @@ import {UsersModule} from "./users/users.module";
 @Module({
     imports: [
         UsersModule,
-        MqttModule,
+        // MqttModule,
         LockersModule,
         ConfigModule.forRoot(),
         TypeOrmModule.forRoot({
@@ -25,7 +25,7 @@ import {UsersModule} from "./users/users.module";
             synchronize: true,
         }),
     ],
-    controllers: [AppController, MqttController],
+    controllers: [AppController],
     providers: [AppService],
 })
 export class AppModule {

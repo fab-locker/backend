@@ -5,12 +5,12 @@ export class UsersEntity {
     @PrimaryColumn()
     id_rfid: number;
 
-    @Column()
+    @Column({nullable: false})
     is_admin: boolean;
 
-    @Column()
+    @Column({nullable: false})
     mail_junia: string;
 
-    @Column()
+    @Column({nullable: false})
     password: string;
 }

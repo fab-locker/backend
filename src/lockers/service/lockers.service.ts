@@ -23,4 +23,8 @@ export class LockersService {
     create(locker: LockerDto): Promise<LockerDto> {
         return this.lockerRepository.save(locker);
     }
+
+    delete(locker: LockerDto): Promise<LockerDto> {
+        return this.lockerRepository.remove(locker);
+    }
 }

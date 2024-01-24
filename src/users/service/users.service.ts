@@ -2,7 +2,7 @@ import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {UsersEntity} from "../entity/users.entity";
-import {UsersDto} from "../dto/users.dto";
+import {CreateUsersDto} from "../dto/create-users.dto";
 
 @Injectable()
 export class UsersService {
@@ -13,7 +13,7 @@ export class UsersService {
     }
 
 
-    findAll(): Promise<UsersDto[]> {
+    findAll(): Promise<UsersEntity[]> {
         return this.usersRepository.find();
     }
 
@@ -22,27 +22,28 @@ export class UsersService {
         let entity: UsersEntity | PromiseLike<UsersEntity>;
 
         if (fieldName === 'id_rfid') {
-            const entity = await this.usersRepository.findOne({where: {id_rfid: value}});
+            if (typeof value !== 'number') throw new NotFoundException("Invalid RFID");
+            entity = await this.usersRepository.findOne({where: {id_rfid: value}});
         } else if (fieldName === 'mail_junia') {
-            const entity = await this.usersRepository.findOne({where: {mail_junia: value}});
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            if (typeof value !== 'string' || !emailRegex.test(value)) {
+                throw new NotFoundException("Invalid email address");
+            }
+            entity = await this.usersRepository.findOne({where: {mail_junia: value.toString()}});
         }
 
         if (!entity) {
-            throw new NotFoundException(`No record found with ${fieldName}=${value}`);
+            throw new NotFoundException(`No user found with ${value} as ${fieldName}`);
         }
 
         return entity;
     }
 
-    create(user: UsersDto): Promise<UsersDto> {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-        if (!emailRegex.test(user.mail_junia)) {
-            throw new Error("Invalid email address");
-        }
+    async create(user: CreateUsersDto): Promise<CreateUsersDto> {
         return this.usersRepository.save(user);
     }
 
-    delete(user: UsersDto): Promise<UsersDto> {
+    delete(user: CreateUsersDto): Promise<CreateUsersDto> {
         return this.usersRepository.remove(user);
     }
 }

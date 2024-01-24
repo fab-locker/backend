@@ -3,7 +3,7 @@ import {LockersService} from '../service/lockers.service';
 import {LockerDto} from '../dto/locker.dto';
 import {ApiTags} from "@nestjs/swagger";
 
-@ApiTags('API')
+@ApiTags('Lockers')
 @Controller('api/lockers')
 export class LockersController {
     constructor(private lockersService: LockersService) {
@@ -17,5 +17,10 @@ export class LockersController {
     @Post('add')
     create(@Body() locker: LockerDto): Promise<LockerDto> {
         return this.lockersService.create(locker);
+    }
+
+    @Post('delete')
+    delete(@Body() locker: LockerDto): Promise<LockerDto> {
+        return this.lockersService.delete(locker);
     }
 }
