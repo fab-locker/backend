@@ -1,39 +1,50 @@
 // mqtt.service.ts
-import {Injectable} from '@nestjs/common';
-import mqtt, {IClientOptions} from 'mqtt';
+import { Injectable } from '@nestjs/common';
+import mqtt, { IClientOptions } from 'mqtt';
 
 @Injectable()
 export class MqttService {
-    private client: mqtt.MqttClient;
+  private client: mqtt.MqttClient;
+  private receivedMessage: string;
 
-    constructor() {
-        const options: IClientOptions = {
-            host: '9badbe94c25a4774be743345e8145009.s2.eu.hivemq.cloud',
-            port: 8883,
-            protocol: 'mqtts',
-            username: 'admin',
-            password: 'Adminjunia59',
-        };
+  constructor() {
+    const options: IClientOptions = {
+      host: '8f9d13c4539441108d6ce0803630c8aa.s2.eu.hivemq.cloud',
+      port: 8883,
+      protocol: 'mqtts',
+      username: 'fablocker_AP4',
+      password: 'Fablocker59000.',
+    };
 
-        this.client = mqtt.connect(options);
+    this.client = mqtt.connect(options);
 
-        this.client.on('connect', () => {
-            console.log('Connected');
-        });
+    this.client.on('connect', () => {
+      console.log('Connected');
+    });
 
-        this.client.on('error', (error) => {
-            console.log(error);
-        });
+    this.client.on('error', (error) => {
+      console.log(error);
+    });
 
-        this.client.on('message', (topic, message) => {
-            console.log('Received message:', topic, message.toString());
-        });
+    this.client.on('message', (topic, message) => {
+      console.log('Received message:', topic, message.toString());
+    });
 
-        this.client.subscribe('locker/open');
-        this.client.subscribe('rfid/read');
-    }
+    this.client.on('message', (topic, message) => {
+      console.log('Received message:', topic, message.toString());
+      if (topic === 'rfidTopic') {
+        this.receivedMessage = message.toString();
+      }
+    });
 
-    publishMessage(topic: string, message: string): void {
-        this.client.publish(topic, message);
-    }
+    this.client.subscribe('rfidTopic');
+  }
+
+  publishMessage(topic: string, message: string): void {
+    this.client.publish(topic, message);
+  }
+
+  getReceivedMessage(): string {
+    return this.receivedMessage;
+  }
 }

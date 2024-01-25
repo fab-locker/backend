@@ -1,16 +1,16 @@
-import {Column, Entity, PrimaryColumn} from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('users')
 export class UsersEntity {
-    @PrimaryColumn()
-    id_rfid: number;
+  @PrimaryColumn()
+  rfid: number;
 
-    @Column({nullable: false})
-    is_admin: boolean;
+  @Column({ nullable: false })
+  admin: boolean;
 
-    @Column({nullable: false})
-    mail_junia: string;
+  @Column({ nullable: false })
+  mail: string;
 
-    @Column({nullable: false})
-    password: string;
+  @Column({ nullable: false })
+  password: string;
 }
