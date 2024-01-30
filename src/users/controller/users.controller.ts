@@ -26,7 +26,7 @@ export class UsersController {
     @ApiQuery({name: 'id_rfid', type: 'number', required: false})
     @ApiQuery({name: 'mail', type: 'string', required: false})
     @Get()
-    getUsers(@Query('id_rfid') id: number, @Query('mail') mail: string) {
+    getUsers(@Query('id_rfid') id?: number, @Query('mail') mail?: string) {
         if (id) {
             return this.usersService.findOne('id_rfid', parseInt(id.toString()));
         } else if (mail) {
