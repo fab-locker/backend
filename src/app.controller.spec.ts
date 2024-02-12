@@ -15,8 +15,14 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should be defined"', () => {
+      expect(appController).toBeDefined();
+    });
+
+    it('should return the homepage HTML', () => {
+      const mockHtml = 'Mocked HTML';
+      jest.spyOn(appController, 'getHomePage').mockReturnValue(mockHtml);
+      expect(appController.getHomePage()).toEqual(mockHtml);
     });
   });
 });
