@@ -13,7 +13,7 @@ describe('LockersController', () => {
 
   const mockLockersService = {
     findAll: jest.fn().mockResolvedValueOnce([mockLocker]),
-    createLocker: jest.fn(),
+    create: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -47,7 +47,7 @@ describe('LockersController', () => {
         id: 36,
       };
 
-      mockLockersService.createLocker = jest
+      mockLockersService.create = jest
         .fn()
         .mockResolvedValueOnce(mockLocker);
 

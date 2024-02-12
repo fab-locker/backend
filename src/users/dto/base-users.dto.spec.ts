@@ -1,7 +1,7 @@
-import {BaseUsersDto} from './base-users.dto';
+import { BaseUsersDto } from './base-users.dto';
 
 describe('LockerDto', () => {
-    it('should be defined', () => {
-        expect(new BaseUsersDto()).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(new BaseUsersDto()).toBeDefined();
+  });
 });

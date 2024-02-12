@@ -28,20 +28,15 @@ export class MqttService {
 
     this.client.on('message', (topic, message) => {
       console.log('Received message:', topic, message.toString());
-    });
-
-    this.client.on('message', (topic, message) => {
-      console.log('Received message:', topic, message.toString());
-      if (topic === 'rfidTopic') {
-        this.receivedMessage = message.toString();
-      }
+      this.receivedMessage = message.toString();
     });
 
     this.client.subscribe('rfidTopic');
   }
 
-  publishMessage(topic: string, message: string): void {
+  publishMessage(topic: string, message: string): string {
     this.client.publish(topic, message);
+    return `Message ${message} published on topic ${topic}`;
   }
 
   getReceivedMessage(): string {

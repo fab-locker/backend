@@ -5,11 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LockersModule } from './lockers/lockers.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { MqttController } from './mqtt/controller/mqtt.controller';
+import { MqttModule } from './mqtt/mqtt.module';
 
 @Module({
   imports: [
     UsersModule,
-    // MqttModule,
+    MqttModule,
     LockersModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
@@ -23,7 +25,7 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
     }),
   ],
-  controllers: [AppController /*MqttController*/],
+  controllers: [AppController, MqttController],
   providers: [AppService],
 })
 export class AppModule {}

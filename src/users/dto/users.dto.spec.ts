@@ -1,7 +1,7 @@
-import {UsersDto} from "./users.dto";
+import { UsersDto } from './users.dto';
 
 describe('LockerDto', () => {
-    it('should be defined', () => {
-        expect(new UsersDto()).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(new UsersDto()).toBeDefined();
+  });
 });
