@@ -12,17 +12,12 @@ export class ItemsService {
   ) {}
   
   async getAll(fieldName: string, value: any): Promise<ItemEntity[] | null> {
-    try {
-      return await this.itemRepository.find({ where: { [fieldName]: value } });
-    } catch (error) {
-      console.error('Erreur lors de la récupération des éléments par nom :', error);
-      return null;
-    }
+        return await this.itemRepository.find({ where: { [fieldName]: value } });
   }
   
   async getOne(fieldName: string, value: any): Promise<ItemEntity | null> {
     try {
-      return await this.itemRepository.findOne({ where: { [fieldName]: value } });
+      await this.itemRepository.findOne({ where: { [fieldName]: value } });
     } catch (error) {
       console.error('Erreur lors de la récupération d\'un élément :', error);
       return null;

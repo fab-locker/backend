@@ -7,12 +7,14 @@ import {MqttController} from './mqtt/controller/mqtt.controller';
 import {MqttModule} from './mqtt/mqtt.module';
 import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
+import { ItemsModule } from './items/items.module';
 
 @Module({
     imports: [
         UsersModule,
         // MqttModule,
         LockersModule,
+        ItemsModule,
         ConfigModule.forRoot(),
         TypeOrmModule.forRoot({
             type: 'mysql',
