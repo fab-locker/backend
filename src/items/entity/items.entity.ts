@@ -23,7 +23,4 @@ export class ItemEntity{
     @Column()
     borrow_duration: number
 
-    @Column()
-    item_id: number
-
 }

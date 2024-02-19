@@ -1,11 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString, isNotEmpty } from "class-validator";
 
-export class BaseItemDto{
-
-    @IsNotEmpty()
-    @IsNumber()
-    readonly id: number
-
+export class CreateItemDto{
     @IsNotEmpty({message: "id_locker cannot be empty"})
     @IsNumber()
     id_locker: number
