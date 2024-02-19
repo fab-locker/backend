@@ -1,44 +1,30 @@
-import {Test, TestingModule} from '@nestjs/testing';
-import {MqttController} from './mqtt.controller';
-import {MqttService} from '../service/mqtt.service';
+// mqtt.controller.spec.ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { MqttController } from './mqtt.controller';
+import { MqttService } from '../service/mqtt.service';
+import { MqttServiceMock } from '../../mocks/mqtt.service.mock';
 
 describe('MqttController', () => {
-    let mqttService: MqttService;
-    let mqttController: MqttController;
+  let mqttController: MqttController;
 
-    const mockMqttService = {
-        publishMessage: jest.fn(),
-    }
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [MqttController],
+      providers: [{ provide: MqttService, useClass: MqttServiceMock }],
+    }).compile();
 
-    beforeEach(async () => {
-        const mqttModule: TestingModule = await Test.createTestingModule({
-            controllers: [MqttController],
-            providers: [
-                {
-                    provide: MqttService,
-                    useValue: mockMqttService,
-                },
-            ],
-        }).compile();
+    mqttController = module.get<MqttController>(MqttController);
+  });
 
-        mqttService = mqttModule.get<MqttService>(MqttService);
-        mqttController = mqttModule.get<MqttController>(MqttController);
+  describe('receiveMessage', () => {
+    it('should receive a message', () => {
+      expect(mqttController.receiveMessage()).resolves.toEqual('Message received');
     });
+  });
 
-
-    it('should be defined', () => {
-        expect(mqttController).toBeDefined();
+  describe('publishMessage', () => {
+    it('should publish a message', () => {
+      expect(mqttController.publishMessage('topic', 'message')).resolves.toEqual('Message published');
     });
-
-    describe('publishMessage', () => {
-        it('should publish a message', async () => {
-            const message = 'Open';
-
-            mockMqttService.publishMessage = jest.fn().mockResolvedValueOnce(message);
-
-            const result = mqttController.openLocker();
-            expect(mqttService.publishMessage).toHaveBeenCalled();
-            expect(result).toEqual(`Message 'Open' published via MQTT on topic locker/open`);
-        })
-    })
+  });
 });

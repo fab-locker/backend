@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString, isNotEmpty } from "class-validator";
 
-export class ItemDto{
+export class BaseItemDto{
 
     @IsNotEmpty()
     @IsNumber()
@@ -29,12 +29,5 @@ export class ItemDto{
     @IsNotEmpty({message: "borrow cannot be empty"})
     @IsNumber()
     borrow_duration: number
-
-
-
-
-
-
-
 
 }

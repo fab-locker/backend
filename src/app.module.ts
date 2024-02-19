@@ -13,8 +13,8 @@ import { ItemsModule } from './items/items.module';
     imports: [
         UsersModule,
         // MqttModule,
-        LockersModule,
         ItemsModule,
+        LockersModule,
         ConfigModule.forRoot(),
         TypeOrmModule.forRoot({
             type: 'mysql',
@@ -30,5 +30,4 @@ import { ItemsModule } from './items/items.module';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}
