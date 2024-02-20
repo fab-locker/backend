@@ -5,9 +5,10 @@ import { UsersService } from '../users/service/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from '../users/entity/users.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { LocalStrategy } from './strategies/local-stragy';
 
 @Module({
-  providers: [AuthService, UsersService, JwtService],
+  providers: [AuthService, UsersService, JwtService, LocalStrategy],
   controllers: [AuthController],
   imports: [
     JwtModule.register({
