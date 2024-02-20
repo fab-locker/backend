@@ -1,4 +1,4 @@
-import { BaseUsersDto } from './base-users.dto';
+import { BaseUsersDto } from './baseUsers.dto';
 
 describe('LockerDto', () => {
   it('should be defined', () => {

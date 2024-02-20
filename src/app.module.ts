@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MqttController } from './mqtt/controller/mqtt.controller';
 import { MqttModule } from './mqtt/mqtt.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MqttModule } from './mqtt/mqtt.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [AppController, MqttController],
   providers: [AppService],

@@ -20,10 +20,10 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUsersDto } from '../dto/create-users.dto';
+import { CreateUsersDto } from '../dto/createUsers.dto';
 import { UsersService } from '../service/users.service';
-import { UsersDto } from '../dto/users.dto';
-import { UpdateUsersDto } from '../dto/update-user.dto';
+import { GetUsersDto } from '../dto/getUsersDto';
+import { UpdateUsersDto } from '../dto/updateUser.dto';
 
 @ApiTags('Users')
 @Controller('api/users')
@@ -31,7 +31,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Get users (with optional filters)' })
-  @ApiOkResponse({ description: 'Success', type: [UsersDto] })
+  @ApiOkResponse({ description: 'Success', type: [GetUsersDto] })
   @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
   @ApiQuery({ name: 'mail', type: 'string', required: false })
   @Get()
@@ -46,7 +46,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Create an user' })
-  @ApiCreatedResponse({ description: 'User created', type: UsersDto })
+  @ApiCreatedResponse({ description: 'User created', type: GetUsersDto })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -62,12 +62,12 @@ export class UsersController {
   })
   @ApiBody({ type: CreateUsersDto })
   @Post()
-  async create(@Body() user: CreateUsersDto): Promise<UsersDto> {
+  async create(@Body() user: CreateUsersDto): Promise<GetUsersDto> {
     return this.usersService.create(user);
   }
 
   @ApiOperation({ summary: 'Update an user' })
-  @ApiOkResponse({ description: 'User updated', type: UsersDto })
+  @ApiOkResponse({ description: 'User updated', type: GetUsersDto })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -87,7 +87,7 @@ export class UsersController {
   async updateUser(
     @Param('rfid') rfid: number,
     @Body() user: Partial<UpdateUsersDto>,
-  ): Promise<UsersDto> {
+  ): Promise<GetUsersDto> {
     return this.usersService.update(rfid, user);
   }
 

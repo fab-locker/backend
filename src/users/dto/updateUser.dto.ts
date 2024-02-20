@@ -1,3 +1,3 @@
-import { BaseUsersDto } from './base-users.dto';
+import { BaseUsersDto } from './baseUsers.dto';
 
 export class UpdateUsersDto extends BaseUsersDto {}

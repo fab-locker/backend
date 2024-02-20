@@ -1,4 +1,4 @@
-import { UpdateUsersDto } from './update-user.dto';
+import { UpdateUsersDto } from './updateUser.dto';
 
 describe('LockerDto', () => {
   it('should be defined', () => {

@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('users')
 export class UsersEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'bigint' })
   rfid: number;
 
   @Column({ nullable: false })

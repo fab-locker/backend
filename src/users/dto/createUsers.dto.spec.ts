@@ -1,4 +1,4 @@
-import { CreateUsersDto } from './create-users.dto';
+import { CreateUsersDto } from './createUsers.dto';
 
 describe('LockerDto', () => {
   it('should be defined', () => {
