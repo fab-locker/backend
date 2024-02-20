@@ -3,9 +3,9 @@ import { BaseItemDto } from "../dto/base-items.dto";
 import { ItemsService } from "../service/items.service";
 import { UpdateItemDto } from "../dto/update-item.dto";
 import { CreateItemDto } from "../dto/create-item.dto";
-import { ApiBody, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 
-@ApiTags('items')
+@ApiTags('Items')
 @Controller('api/items')
 export class ItemsController{
     constructor(private itemService: ItemsService){
@@ -15,7 +15,7 @@ export class ItemsController{
     @ApiOperation({ summary: 'Get item(s) (with optional filters)' })
     @ApiOkResponse({ description: 'Success', type: [BaseItemDto] })
     @Get()
-    async getItems(@Body() item: Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
+    async getItems(@Body() item?: Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
         return this.itemService.getItems(item);
       }
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsNumber, IsString, isNotEmpty } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class BaseItemDto{
 
@@ -23,17 +23,17 @@ export class BaseItemDto{
     description: string
 
     @ApiProperty({example: true})
-    // @IsNotEmpty({message: "availability cannot be empty"})
+    @IsNotEmpty({message: "availability cannot be empty"})
     @IsBoolean()
     availability: boolean
 
     @ApiProperty({example:95})
-    // @IsNotEmpty()
+    @IsNotEmpty()
     @IsNumber()
     weight: number
 
     @ApiProperty({example: 7})
-    // @IsNotEmpty({message: "borrow cannot be empty"})
+    @IsNotEmpty({message: "borrow cannot be empty"})
     @IsNumber()
     borrow_duration: number
 

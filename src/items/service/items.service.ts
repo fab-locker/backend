@@ -14,9 +14,9 @@ export class ItemsService {
   ) {}
 
 
-  async getItems(item : Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
+  async getItems(item? : Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
     try{
-    if(!(JSON.stringify(item) === '{}')){
+    if(!item){
       return await this.itemRepository.findOne({ where: item });
     }else{
       return await this.itemRepository.find();
