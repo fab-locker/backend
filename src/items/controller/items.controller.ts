@@ -1,45 +1,47 @@
 import { Controller, Get, Post,Param, Body, Patch, Delete} from "@nestjs/common";
 import { BaseItemDto } from "../dto/base-items.dto";
 import { ItemsService } from "../service/items.service";
-import { ApiTags } from "@nestjs/swagger";
 import { UpdateItemDto } from "../dto/update-item.dto";
 import { CreateItemDto } from "../dto/create-item.dto";
+import { ApiBody, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('items')
 @Controller('api/items')
 export class ItemsController{
     constructor(private itemService: ItemsService){
     }
 
+
+    @ApiOperation({ summary: 'Get item(s) (with optional filters)' })
+    @ApiOkResponse({ description: 'Success', type: [BaseItemDto] })
     @Get()
     async getItems(@Body() item: Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
-        // Sinon, continuer le traitement normalement
         return this.itemService.getItems(item);
       }
 
-    // @Get('getOne')
-    // async getOneItem(@Param('fieldName') fieldName: string, @Param('value') value: any): Promise<BaseItemDto> {
-    //     console.log(fieldName, value)
-    //   return this.itemService.getOne(fieldName, value);
-    // }
-    // @Post('update')
-    // updateItems(fieldName: string, value: any, newValue: any): Promise<void>{
-    
+
+    @ApiOperation({ summary: 'Create item (with optional filters)' })
+    @ApiOkResponse({ description: 'Success', type: [CreateItemDto] })
     @Post('create')
     async createItem(@Body() item: CreateItemDto): Promise<CreateItemDto | null>{
       return this.itemService.createItem(item)
     }
 
+
+    @ApiOperation({ summary: 'Update item (with optional filters)' })
+    @ApiOkResponse({ description: 'Success', type: [UpdateItemDto] })
+    @ApiQuery({ name: 'id', type: 'number', required: true })
     @Patch('update/:id')
     async updateItem(@Param('id') id:number, @Body() newItem: Partial<UpdateItemDto>): Promise<UpdateItemDto | null>{
       return this.itemService.updateItem(id,newItem)
     }
 
+    @ApiOperation({ summary: 'Delete item' })
+    @ApiOkResponse({ description: 'Success' })
+    @ApiQuery({ name: 'id', type: 'number', required: true })
     @Delete('delete/:id')
     async deleteItem(@Param('id') id:number): Promise<{ statusCode: number; message: string }>{
      return this.itemService.deleteItem(id)
     }
-    
-    
-    // }
 
 }

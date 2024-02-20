@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsNumber, IsString, isNotEmpty } from "class-validator";
 
 export class BaseItemDto{
@@ -6,27 +7,33 @@ export class BaseItemDto{
     @IsNumber()
     readonly id: number
 
+    @ApiProperty({example: 6})
     @IsNotEmpty({message: "id_locker cannot be empty"})
     @IsNumber()
     id_locker: number
 
+    @ApiProperty({example:"oscilloscope"})
     @IsNotEmpty({message: "name cannot be empty"})
     @IsString()
     name: string
 
-    @IsNotEmpty({message: "description cannot be empty"})
+    @ApiProperty({example:"permet de mesurer une tension"})
+    // @IsNotEmpty({message: "description cannot be empty"})
     @IsString()
     description: string
 
-    @IsNotEmpty({message: "availability cannot be empty"})
+    @ApiProperty({example: true})
+    // @IsNotEmpty({message: "availability cannot be empty"})
     @IsBoolean()
     availability: boolean
 
-    @IsNotEmpty()
+    @ApiProperty({example:95})
+    // @IsNotEmpty()
     @IsNumber()
     weight: number
 
-    @IsNotEmpty({message: "borrow cannot be empty"})
+    @ApiProperty({example: 7})
+    // @IsNotEmpty({message: "borrow cannot be empty"})
     @IsNumber()
     borrow_duration: number
 
