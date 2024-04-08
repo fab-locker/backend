@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersEntity } from '../users/entity/users.entity';
 import { JwtService } from '@nestjs/jwt';
 import { AccessToken } from './types/AccessToken';
-import { CreateUsersDto } from '../users/dto/createUsers.dto';
+import { RegisterRequestDto } from './dtos/register-request.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,13 +37,13 @@ export class AuthService {
     };
   }
 
-  async register(user: CreateUsersDto): Promise<AccessToken> {
+  async register(user: RegisterRequestDto): Promise<AccessToken> {
     const existingUser = await this.userService.findOne('mail', user.mail);
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    const newUser: UsersEntity = { ...user, password: hashedPassword};
+    const newUser: UsersEntity = { ...user, password: hashedPassword };
     await this.userService.create(newUser);
     return this.login(newUser);
   }
