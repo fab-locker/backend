@@ -2,9 +2,7 @@ import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersEntity } from '../entity/users.entity';
-import { CreateUsersDto } from '../dto/createUsers.dto';
-import { GetUsersDto } from '../dto/getUsersDto';
-import { UpdateUsersDto } from '../dto/updateUser.dto';
+import { CreateUsersDto, UpdateUsersDto } from '../dto/createUsers.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,8 +17,8 @@ export class UsersService {
    * @param user
    * @returns {Promise<boolean>}
    */
-  async doUserExists(user: Partial<GetUsersDto>): Promise<boolean> {
-    let existingUser: GetUsersDto;
+  async doUserExists(user: UpdateUsersDto): Promise<boolean> {
+    let existingUser: UpdateUsersDto;
 
     // If the mail or rfid is passed in the body, it means it is a creation or an update of mail or rfid, so we need to check if the user exists
     // Otherwise, it means it is exclusively an update of role or password, so no need to check if the user exists
@@ -46,9 +44,9 @@ export class UsersService {
 
   /**
    * Find all users
-   * @returns {Promise<GetUsersDto[]>}
+   * @returns {Promise<UsersEntity[]>}
    */
-  findAll(): Promise<GetUsersDto[]> {
+  findAll(): Promise<UsersEntity[]> {
     return this.usersRepository.find({
       select: ['rfid', 'mail', 'admin'],
     });
@@ -60,8 +58,8 @@ export class UsersService {
    * @param value
    * @returns {Promise<GetUsersDto>}
    */
-  async findOne(fieldName: string, value: any): Promise<GetUsersDto> {
-    let entity: GetUsersDto | PromiseLike<GetUsersDto>;
+  async findOne(fieldName: string, value: any): Promise<UsersEntity> {
+    let entity: UsersEntity | PromiseLike<UsersEntity>;
 
     if (fieldName === 'id_rfid') {
       if (typeof value !== 'number')
@@ -89,14 +87,14 @@ export class UsersService {
   /**
    * Create a user
    * @param {CreateUsersDto} user
-   * @returns {Promise<GetUsersDto>}
+   * @returns {Promise<UsersEntity>}
    */
-  async create(user: CreateUsersDto): Promise<GetUsersDto> {
+  async create(user: CreateUsersDto) {
     await this.doUserExists(user);
     const newUser = this.usersRepository.create(user);
     await this.usersRepository.save(newUser);
     const { password, ...result } = newUser;
-    return newUser;
+    return result;
   }
 
   /**
@@ -105,7 +103,7 @@ export class UsersService {
    * @param {Partial<UpdateUsersDto>} user
    * @returns {Promise<GetUsersDto>}
    */
-  async update(rfid: number, user: Partial<UpdateUsersDto>): Promise<GetUsersDto> {
+  async update(rfid: number, user: Partial<UpdateUsersDto>) {
     await this.doUserExists(user);
     await this.usersRepository.update({ rfid: rfid }, user);
     const userUpdated = await this.usersRepository.findOne({

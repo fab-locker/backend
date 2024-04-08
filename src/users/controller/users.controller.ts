@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -20,18 +10,17 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUsersDto } from '../dto/createUsers.dto';
+import { CreateUsersDto, UpdateUsersDto } from '../dto/createUsers.dto';
 import { UsersService } from '../service/users.service';
-import { GetUsersDto } from '../dto/getUsersDto';
-import { UpdateUsersDto } from '../dto/updateUser.dto';
 
 @ApiTags('Users')
 @Controller('api/users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) {
+  }
 
   @ApiOperation({ summary: 'Get users (with optional filters)' })
-  @ApiOkResponse({ description: 'Success', type: [GetUsersDto] })
+  @ApiOkResponse({ description: 'Success' })
   @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
   @ApiQuery({ name: 'mail', type: 'string', required: false })
   @Get()
@@ -46,7 +35,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Create an user' })
-  @ApiCreatedResponse({ description: 'User created', type: GetUsersDto })
+  @ApiCreatedResponse({ description: 'User created' })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -62,12 +51,12 @@ export class UsersController {
   })
   @ApiBody({ type: CreateUsersDto })
   @Post()
-  async create(@Body() user: CreateUsersDto): Promise<GetUsersDto> {
+  async create(@Body() user: CreateUsersDto) {
     return this.usersService.create(user);
   }
 
   @ApiOperation({ summary: 'Update an user' })
-  @ApiOkResponse({ description: 'User updated', type: GetUsersDto })
+  @ApiOkResponse({ description: 'User updated' })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -87,7 +76,7 @@ export class UsersController {
   async updateUser(
     @Param('rfid') rfid: number,
     @Body() user: Partial<UpdateUsersDto>,
-  ): Promise<GetUsersDto> {
+  ) {
     return this.usersService.update(rfid, user);
   }
 

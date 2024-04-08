@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     UsersModule,
-    MqttModule,
+    // MqttModule,
     LockersModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
@@ -27,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     AuthModule,
   ],
-  controllers: [AppController, MqttController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

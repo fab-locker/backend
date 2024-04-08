@@ -1,34 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/service/users.service';
 import * as bcrypt from 'bcrypt';
 import { UsersEntity } from '../users/entity/users.entity';
 import { JwtService } from '@nestjs/jwt';
+import { AccessToken } from './types/AccessToken';
+import { CreateUsersDto } from '../users/dto/createUsers.dto';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly userService: UsersService, private jwtService: JwtService) {
+  constructor(
+    private readonly userService: UsersService,
+    private jwtService: JwtService,
+  ) {
   }
 
   async validateUser(mail: string, pass: string) {
     const user = await this.userService.findOne('mail', mail);
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
-    return null;
+    const isMatch: boolean = bcrypt.compareSync(pass, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Invalid password');
+    }
+    return user;
   }
 
-  async login(user: UsersEntity) {
+  async login(user: UsersEntity): Promise<AccessToken> {
     const payload = {
-      username: user.mail,
-      sub: {
-        admin: user.admin,
-      },
+      mail: user.mail,
+      rfid: user.rfid,
     };
     return {
-      ...user,
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async register(user: CreateUsersDto): Promise<AccessToken> {
+    const existingUser = await this.userService.findOne('mail', user.mail);
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser: UsersEntity = { ...user, password: hashedPassword};
+    await this.userService.create(newUser);
+    return this.login(newUser);
   }
 }
