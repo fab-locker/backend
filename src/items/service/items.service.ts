@@ -31,12 +31,13 @@ export class ItemsService {
     try{
       await this.itemRepository.update(id,item);
     }catch(error){
-      console.error('Erreur lors de la récupération d\'un élément :', error);
+      console.error('Erreur lors de la mise à jour d\'un item :', error);
       return null;
     }
   }
 
   async createItem(item: CreateItemDto): Promise<CreateItemDto | null>{
+    try{
     const busyLocker = await this.itemRepository.findOne({where:[{id_locker :item.id_locker}]})
       if(!busyLocker){
         const newItem = this.itemRepository.create(item);
@@ -45,15 +46,24 @@ export class ItemsService {
       }else{
         throw new ConflictException("le casier indiqué n'est pas disponible choisissez en un autre")
       }
+    }catch(error){
+      console.error('Erreur lors de la récupération d\'un item :', error);
+      return null;
+    }
     }
 
   async deleteItem(id: number):  Promise<{ statusCode: number; message: string }>{
+    try{
     const existingItem = await this.itemRepository.findOne({where:[{id : id}]} )
     if(!existingItem){
       throw new NotFoundException("l'item sélectionné n'existe pas")
     } else{
       await this.itemRepository.delete({id:id})
       return {statusCode: HttpStatus.OK,message:"Item deleted successfuly"}
+    }
+    }catch(error){
+      console.error('Erreur lors de la suppression d\'un item :', error);
+      return null;
     }
   }
 

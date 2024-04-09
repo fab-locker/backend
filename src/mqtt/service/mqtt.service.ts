@@ -9,11 +9,11 @@ export class MqttService {
 
   constructor() {
     const options: IClientOptions = {
-      host: '8f9d13c4539441108d6ce0803630c8aa.s2.eu.hivemq.cloud',
+      host: '0bd8cb66f7bc4d168d6512d83832a462.s1.eu.hivemq.cloud',
       port: 8883,
       protocol: 'mqtts',
-      username: 'fablocker_AP4',
-      password: 'Fablocker59000.',
+      username: 'PLSmqtt',
+      password: 'PortableL3dSystem',
     };
 
     this.client = mqtt.connect(options);
