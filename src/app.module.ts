@@ -8,14 +8,14 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
-import { JwtStrategy } from './auth/strategies/jwt-strategy';
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
     // MqttModule,
     LockersModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -26,7 +26,6 @@ import { JwtStrategy } from './auth/strategies/jwt-strategy';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -35,7 +34,6 @@ import { JwtStrategy } from './auth/strategies/jwt-strategy';
       provide: APP_GUARD,
       useClass: JwtGuard,
     },
-    JwtStrategy,
   ],
 })
 export class AppModule {

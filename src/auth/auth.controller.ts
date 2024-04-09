@@ -1,14 +1,23 @@
-import { BadRequestException, Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterResponseDTO } from './register-response.dto';
-import { RegisterRequestDto } from './dtos/register-request.dto';
-import { LoginResponseDTO } from './dtos/login-response.dto';
-import { AuthGuard } from '@nestjs/passport';
 
+import { AuthGuard } from '@nestjs/passport';
+import { RegisterRequestDto } from '../../auth/dtos/register-request.dto';
+import { LoginResponseDTO } from '../../auth/dtos/login-response.dto';
+import { RegisterResponseDTO } from '../../auth/dtos/register-response.dto';
+import { Public } from './decorators/public.decorator';
+
+@Public()
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login')

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Request } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -12,6 +12,8 @@ import {
 } from '@nestjs/swagger';
 import { CreateUsersDto, UpdateUsersDto } from '../dto/createUsers.dto';
 import { UsersService } from '../service/users.service';
+import { DeleteResult } from 'typeorm';
+import { AccessTokenPayload } from '../../auth/types/AccessTokenPayload';
 
 @ApiTags('Users')
 @Controller('api/users')
@@ -22,13 +24,15 @@ export class UsersController {
   @ApiOperation({ summary: 'Get users (with optional filters)' })
   @ApiOkResponse({ description: 'Success' })
   @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
-  @ApiQuery({ name: 'mail', type: 'string', required: false })
+  @ApiQuery({ name: 'email', type: 'string', required: false })
   @Get()
-  getUsers(@Query('id_rfid') id?: number, @Query('mail') mail?: string) {
+  getUsers(@Request() req, @Query('id_rfid') id?: number, @Query('email') email?: string) {
+    const accessTokenPayload: AccessTokenPayload =
+      req.user as AccessTokenPayload;
     if (id) {
-      return this.usersService.findOne('id_rfid', parseInt(id.toString()));
-    } else if (mail) {
-      return this.usersService.findOne('mail_junia', mail);
+      return this.usersService.findOneByRfid(id);
+    } else if (email) {
+      return this.usersService.findOneByEmail(email);
     } else {
       return this.usersService.findAll();
     }
@@ -103,7 +107,7 @@ export class UsersController {
   @Delete(':rfid')
   async deleteUser(
     @Param('rfid') rfid: number,
-  ): Promise<{ statusCode: number; message: string }> {
+  ): Promise<DeleteResult> {
     return this.usersService.delete(rfid);
   }
 }

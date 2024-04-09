@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { LockersService } from '../service/lockers.service';
 import { LockerDto } from '../dto/locker.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AccessTokenPayload } from '../../auth/types/AccessTokenPayload';
 
 @ApiTags('Lockers')
 @Controller('api/lockers')
@@ -9,7 +10,9 @@ export class LockersController {
   constructor(private lockersService: LockersService) {}
 
   @Get()
-  getAllLockers(): Promise<LockerDto[]> {
+  getAllLockers(@Request() req): Promise<LockerDto[]> {
+    const accessTokenPayload: AccessTokenPayload =
+      req.user as AccessTokenPayload;
     return this.lockersService.findAll();
   }
 

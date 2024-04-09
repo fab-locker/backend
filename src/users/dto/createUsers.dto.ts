@@ -22,7 +22,7 @@ export class CreateUsersDto {
   @ApiProperty({ example: 'exemple@student.junia.com' })
   @IsString()
   @IsEmail()
-  mail: string;
+  email: string;
 
   @ApiProperty({ example: 'Password123' })
   @IsString()

@@ -1,50 +1,44 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/service/users.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersEntity } from '../users/entity/users.entity';
-import { JwtService } from '@nestjs/jwt';
 import { AccessToken } from './types/AccessToken';
-import { RegisterRequestDto } from './dtos/register-request.dto';
+import { UsersService } from '../users/service/users.service';
+import { RegisterRequestDto } from '../../auth/dtos/register-request.dto';
 
 @Injectable()
 export class AuthService {
-
   constructor(
-    private readonly userService: UsersService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {
   }
 
-  async validateUser(mail: string, pass: string) {
-    const user = await this.userService.findOne('mail', mail);
+  async validateUser(email: string, password: string): Promise<UsersEntity> {
+    const user: UsersEntity = await this.usersService.findOneByEmail(email);
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    const isMatch: boolean = bcrypt.compareSync(pass, user.password);
+    const isMatch: boolean = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException('Password does not match');
     }
     return user;
   }
 
   async login(user: UsersEntity): Promise<AccessToken> {
-    const payload = {
-      mail: user.mail,
-      rfid: user.rfid,
-    };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const payload = { email: user.email, rfid: user.rfid };
+    return { access_token: this.jwtService.sign(payload) };
   }
 
   async register(user: RegisterRequestDto): Promise<AccessToken> {
-    const existingUser = await this.userService.findOne('mail', user.mail);
+    const existingUser = await this.usersService.findOneByEmail(user.email);
     if (existingUser) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException('email already exists');
     }
     const hashedPassword = await bcrypt.hash(user.password, 10);
     const newUser: UsersEntity = { ...user, password: hashedPassword };
-    await this.userService.create(newUser);
+    await this.usersService.create(newUser);
     return this.login(newUser);
   }
 }

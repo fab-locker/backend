@@ -9,7 +9,7 @@ describe('UsersController', () => {
 
   const mockUser = {
     rfid: 123456,
-    mail: 'test@mail.com',
+    email: 'test@mail.com',
     password: 'test',
     admin: false,
   };
@@ -49,7 +49,7 @@ describe('UsersController', () => {
     it('should create a user', async () => {
       const newUser = {
         rfid: 36,
-        mail: 'test36@mail.com',
+        email: 'test36@mail.com',
         password: 'test',
         admin: false,
       };
