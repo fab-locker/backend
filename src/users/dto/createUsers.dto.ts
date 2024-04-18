@@ -7,6 +7,7 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import { Role } from '../../auth/role/role.enum';
 
 export class CreateUsersDto {
   @ApiProperty({ example: 12345678910 })
@@ -17,7 +18,7 @@ export class CreateUsersDto {
   @ApiProperty({ example: false })
   @IsNotEmpty()
   @IsBoolean()
-  admin: boolean;
+  role: Role;
 
   @ApiProperty({ example: 'exemple@student.junia.com' })
   @IsString()

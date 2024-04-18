@@ -11,7 +11,7 @@ describe('UsersController', () => {
     rfid: 123456,
     email: 'test@mail.com',
     password: 'test',
-    admin: false,
+    role: 'user',
   };
 
   const mockUsersService = {
@@ -51,7 +51,7 @@ describe('UsersController', () => {
         rfid: 36,
         email: 'test36@mail.com',
         password: 'test',
-        admin: false,
+        role: 'admin',
       };
 
       mockUsersService.create = jest.fn().mockResolvedValueOnce(mockUser);

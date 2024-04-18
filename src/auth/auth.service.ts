@@ -26,12 +26,12 @@ export class AuthService {
     return user;
   }
 
-  async login(user: UsersEntity): Promise<AccessToken> {
+  async login(user: UsersEntity): Promise<string> {
     const payload = { email: user.email, rfid: user.rfid };
-    return { access_token: this.jwtService.sign(payload) };
+    return this.jwtService.sign(payload);
   }
 
-  async register(user: RegisterRequestDto): Promise<AccessToken> {
+  async register(user: RegisterRequestDto): Promise<string> {
     const existingUser = await this.usersService.findOneByEmail(user.email);
     if (existingUser) {
       throw new BadRequestException('email already exists');

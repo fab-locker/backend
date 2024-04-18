@@ -1,6 +1,8 @@
+import { Role } from '../role/role.enum';
+
 export type RegisterRequestDto = {
   rfid: number;
-  admin: boolean;
+  role: Role;
   email: string;
   password: string;
 };

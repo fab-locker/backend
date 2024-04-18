@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Role } from '../../auth/role/role.enum';
 
 @Entity('users')
 export class UsersEntity {
@@ -6,12 +7,11 @@ export class UsersEntity {
   rfid: number;
 
   @Column({ nullable: false })
-  admin: boolean;
+  role: Role;
 
   @Column({ nullable: false })
   email: string;
 
   @Column({ nullable: false })
   password: string;
-
 }
