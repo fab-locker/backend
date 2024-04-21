@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async login(user: UsersEntity): Promise<string> {
-    const payload = { email: user.email, rfid: user.rfid };
+    const payload = { email: user.email, rfid: user.rfid, role: user.role };
     return this.jwtService.sign(payload);
   }
 
