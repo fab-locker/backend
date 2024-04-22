@@ -3,7 +3,6 @@ import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {LockersModule} from './lockers/lockers.module';
-import {MqttController} from './mqtt/controller/mqtt.controller';
 import {MqttModule} from './mqtt/mqtt.module';
 import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
@@ -12,7 +11,7 @@ import { ItemsModule } from './items/items.module';
 @Module({
     imports: [
         UsersModule,
-        // MqttModule,
+        MqttModule,
         ItemsModule,
         LockersModule,
         ConfigModule.forRoot(),
