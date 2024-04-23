@@ -32,12 +32,12 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Get users (with optional filters)' })
   @ApiOkResponse({ description: 'Success', type: [UsersDto] })
-  @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
+  @ApiQuery({ name: 'id_rfid', type: 'string', required: false })
   @ApiQuery({ name: 'mail', type: 'string', required: false })
   @Get()
-  getUsers(@Query('id_rfid') id?: number, @Query('mail') mail?: string) {
+  getUsers(@Query('id_rfid') id?: string, @Query('mail') mail?: string) {
     if (id) {
-      return this.usersService.findOne('id_rfid', parseInt(id.toString()));
+      return this.usersService.findOne('id_rfid', id.toString());
     } else if (mail) {
       return this.usersService.findOne('mail_junia', mail);
     } else {
@@ -82,10 +82,10 @@ export class UsersController {
     },
   })
   @ApiBody({ type: UpdateUsersDto })
-  @ApiParam({ name: 'rfid', type: 'number' })
+  @ApiParam({ name: 'rfid', type: 'string' })
   @Patch(':rfid')
   async updateUser(
-    @Param('rfid') rfid: number,
+    @Param('rfid') rfid: string,
     @Body() user: Partial<UpdateUsersDto>,
   ): Promise<UsersDto> {
     return this.usersService.update(rfid, user);
@@ -110,10 +110,10 @@ export class UsersController {
       },
     },
   })
-  @ApiParam({ name: 'rfid', type: 'number' })
+  @ApiParam({ name: 'rfid', type: 'string' })
   @Delete(':rfid')
   async deleteUser(
-    @Param('rfid') rfid: number,
+    @Param('rfid') rfid: string,
   ): Promise<{ statusCode: number; message: string }> {
     return this.usersService.delete(rfid);
   }

@@ -1,6 +1,10 @@
 // mqtt.service.ts
 import { Injectable } from '@nestjs/common';
+import { InjectRepository,  } from '@nestjs/typeorm';
+import { Console } from 'console';
 import mqtt, { IClientOptions } from 'mqtt';
+import { UsersEntity } from 'src/users/entity/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class MqttService {
@@ -8,7 +12,10 @@ export class MqttService {
   private receivedMessage: string;
 
 
-  constructor() {
+  constructor(    
+    @InjectRepository(UsersEntity)
+    private usersRepository: Repository<UsersEntity>,
+    ) {
     const options: IClientOptions = {
       host: '0bd8cb66f7bc4d168d6512d83832a462.s1.eu.hivemq.cloud',
       port: 8883,
@@ -21,16 +28,28 @@ export class MqttService {
 
     this.client.on('connect', () => {
       console.log('Connected');
-      this.client.subscribe('box_pickup/rfid/connection');
+      this.client.subscribe('box_pickup/rfid');
     });
 
     this.client.on('error', (error) => {
       console.log(error);
     });
 
-    this.client.on('message', (topic, message) => {
-      console.log('Received message:', topic, message.toString());
+    this.client.on('message', async (topic, message) => {
+      try{
+        console.log(message.toString())
+      const existingUserRfid = await this.usersRepository.findOne({where:[{rfid: message.toString()}]})
+      if(existingUserRfid){
+        console.log('user found')
+        console.log('la carte appartient à : ' + existingUserRfid.mail)
+      }else{
+        console.log('user not found')
+      }
+      console.log('Received message:', topic, " : ", message.toString());
       this.receivedMessage = message.toString();
+    } catch (error){
+      console.error('Error while fetching user:', error);
+    }
     });
 
   }
@@ -39,9 +58,12 @@ export class MqttService {
     const topic = `box_pickup/casier${id}/test_door`
     this.publishMessage(topic ,  "1")
     this.client.on('message', (receivedTopic: string, message) =>{
-      if (receivedTopic === topic) {
-        console.log(message.toString());
-      }
+    console.log("received topic " + receivedTopic)
+    console.log("topic " + topic)
+      // if (receivedTopic === topic) {
+      //   console.log(message.toString());
+      //   console.log("tototototo");
+      // }
     });
   }
 

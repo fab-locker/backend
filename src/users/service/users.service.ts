@@ -68,7 +68,7 @@ export class UsersService {
     let entity: UsersDto | PromiseLike<UsersDto>;
 
     if (fieldName === 'id_rfid') {
-      if (typeof value !== 'number')
+      if (typeof value !== 'string')
         throw new BadRequestException('Invalid RFID');
       entity = await this.usersRepository.findOne({
         where: { rfid: value },
@@ -112,7 +112,7 @@ export class UsersService {
    * @param {Partial<UpdateUsersDto>} user
    * @returns {Promise<UsersDto>}
    */
-  async update(rfid: number, user: Partial<UpdateUsersDto>): Promise<UsersDto> {
+  async update(rfid: string, user: Partial<UpdateUsersDto>): Promise<UsersDto> {
     await this.doUserExists(user);
     await this.usersRepository.update({ rfid: rfid }, user);
     const userUpdated = await this.usersRepository.findOne({
@@ -130,7 +130,7 @@ export class UsersService {
    * @param {number} rfid
    * @returns {Promise<unknown>}
    */
-  async delete(rfid: number): Promise<{ statusCode: number; message: string }> {
+  async delete(rfid: string): Promise<{ statusCode: number; message: string }> {
     const existingUser = await this.usersRepository.findOne({
       where: [{ rfid: rfid }],
     });

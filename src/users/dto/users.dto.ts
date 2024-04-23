@@ -11,7 +11,7 @@ export class UsersDto {
   @ApiProperty({ example: 12345678910 })
   @IsNotEmpty()
   @IsNumber()
-  rfid: number;
+  rfid: string;
 
   @ApiProperty({ example: false })
   @IsNotEmpty()
