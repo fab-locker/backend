@@ -5,15 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LockersModule } from './lockers/lockers.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { MqttController } from './mqtt/controller/mqtt.controller';
-import { MqttModule } from './mqtt/mqtt.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
-    MqttModule,
+    // MqttModule,
     LockersModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -25,7 +27,14 @@ import { MqttModule } from './mqtt/mqtt.module';
       synchronize: true,
     }),
   ],
-  controllers: [AppController, MqttController],
-  providers: [AppService],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule {
+}

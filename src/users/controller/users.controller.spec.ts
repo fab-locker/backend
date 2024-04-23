@@ -1,7 +1,7 @@
 import { UsersController } from './users.controller';
 import { UsersService } from '../service/users.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUsersDto } from '../dto/create-users.dto';
+import { CreateUsersDto } from '../dto/createUsers.dto';
 
 describe('UsersController', () => {
   let usersService: UsersService;
@@ -9,9 +9,9 @@ describe('UsersController', () => {
 
   const mockUser = {
     rfid: 123456,
-    mail: 'test@mail.com',
+    email: 'test@mail.com',
     password: 'test',
-    admin: false,
+    role: 'user',
   };
 
   const mockUsersService = {
@@ -49,9 +49,9 @@ describe('UsersController', () => {
     it('should create a user', async () => {
       const newUser = {
         rfid: 36,
-        mail: 'test36@mail.com',
+        email: 'test36@mail.com',
         password: 'test',
-        admin: false,
+        role: 'admin',
       };
 
       mockUsersService.create = jest.fn().mockResolvedValueOnce(mockUser);

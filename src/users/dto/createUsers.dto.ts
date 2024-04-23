@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsEmail,
@@ -7,8 +7,9 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import { Role } from '../../auth/role/role.enum';
 
-export class BaseUsersDto {
+export class CreateUsersDto {
   @ApiProperty({ example: 12345678910 })
   @IsNotEmpty()
   @IsNumber()
@@ -17,12 +18,12 @@ export class BaseUsersDto {
   @ApiProperty({ example: false })
   @IsNotEmpty()
   @IsBoolean()
-  admin: boolean;
+  role: Role;
 
   @ApiProperty({ example: 'exemple@student.junia.com' })
   @IsString()
   @IsEmail()
-  mail: string;
+  email: string;
 
   @ApiProperty({ example: 'Password123' })
   @IsString()
@@ -32,3 +33,5 @@ export class BaseUsersDto {
   })
   password: string;
 }
+
+export class UpdateUsersDto extends PartialType(CreateUsersDto) {}

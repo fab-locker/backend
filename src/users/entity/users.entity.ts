@@ -1,15 +1,16 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Role } from '../../auth/role/role.enum';
 
 @Entity('users')
 export class UsersEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'bigint' })
   rfid: number;
 
   @Column({ nullable: false })
-  admin: boolean;
+  role: Role;
 
   @Column({ nullable: false })
-  mail: string;
+  email: string;
 
   @Column({ nullable: false })
   password: string;
