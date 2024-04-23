@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Request } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -20,33 +10,36 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUsersDto } from '../dto/create-users.dto';
+import { CreateUsersDto, UpdateUsersDto } from '../dto/createUsers.dto';
 import { UsersService } from '../service/users.service';
-import { UsersDto } from '../dto/users.dto';
-import { UpdateUsersDto } from '../dto/update-user.dto';
+import { DeleteResult } from 'typeorm';
+import { AccessTokenPayload } from '../../auth/types/AccessTokenPayload';
 
 @ApiTags('Users')
 @Controller('api/users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) {
+  }
 
   @ApiOperation({ summary: 'Get users (with optional filters)' })
-  @ApiOkResponse({ description: 'Success', type: [UsersDto] })
+  @ApiOkResponse({ description: 'Success' })
   @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
-  @ApiQuery({ name: 'mail', type: 'string', required: false })
+  @ApiQuery({ name: 'email', type: 'string', required: false })
   @Get()
-  getUsers(@Query('id_rfid') id?: number, @Query('mail') mail?: string) {
+  getUsers(@Request() req, @Query('id_rfid') id?: number, @Query('email') email?: string) {
+    const accessTokenPayload: AccessTokenPayload =
+      req.user as AccessTokenPayload;
     if (id) {
-      return this.usersService.findOne('id_rfid', parseInt(id.toString()));
-    } else if (mail) {
-      return this.usersService.findOne('mail_junia', mail);
+      return this.usersService.findOneByRfid(id);
+    } else if (email) {
+      return this.usersService.findOneByEmail(email);
     } else {
       return this.usersService.findAll();
     }
   }
 
   @ApiOperation({ summary: 'Create an user' })
-  @ApiCreatedResponse({ description: 'User created', type: UsersDto })
+  @ApiCreatedResponse({ description: 'User created' })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -62,12 +55,12 @@ export class UsersController {
   })
   @ApiBody({ type: CreateUsersDto })
   @Post()
-  async create(@Body() user: CreateUsersDto): Promise<UsersDto> {
+  async create(@Body() user: CreateUsersDto) {
     return this.usersService.create(user);
   }
 
   @ApiOperation({ summary: 'Update an user' })
-  @ApiOkResponse({ description: 'User updated', type: UsersDto })
+  @ApiOkResponse({ description: 'User updated' })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     schema: {
@@ -87,7 +80,7 @@ export class UsersController {
   async updateUser(
     @Param('rfid') rfid: number,
     @Body() user: Partial<UpdateUsersDto>,
-  ): Promise<UsersDto> {
+  ) {
     return this.usersService.update(rfid, user);
   }
 
@@ -114,7 +107,7 @@ export class UsersController {
   @Delete(':rfid')
   async deleteUser(
     @Param('rfid') rfid: number,
-  ): Promise<{ statusCode: number; message: string }> {
+  ): Promise<DeleteResult> {
     return this.usersService.delete(rfid);
   }
 }
