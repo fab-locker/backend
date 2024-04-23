@@ -2,8 +2,9 @@ import { Body, Controller, HttpStatus, Post, Request, Res, UseGuards } from '@ne
 import { AuthService } from './auth.service';
 
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterRequestDto } from '../../auth/dtos/register-request.dto';
+import { RegisterRequestDto } from './dtos/register-request.dto';
 import { Public } from './decorators/public.decorator';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 @Public()
 @Controller('auth')
@@ -11,6 +12,7 @@ export class AuthController {
   constructor(private authService: AuthService) {
   }
 
+  @ApiOperation({ summary: 'connects a user' })
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Res() res, @Request() req) {
@@ -24,6 +26,8 @@ export class AuthController {
     }
   }
 
+  @ApiOperation({ summary: 'register a user' })
+  @ApiBody({ type: RegisterRequestDto })
   @Post('register')
   async register(
     @Body() registerBody: RegisterRequestDto,
