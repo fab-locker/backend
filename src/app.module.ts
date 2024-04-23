@@ -13,7 +13,8 @@ import { JwtGuard } from './auth/guards/jwt.guard';
   imports: [
     AuthModule,
     UsersModule,
-    // MqttModule,
+    MqttModule,
+    ItemsModule
     LockersModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
