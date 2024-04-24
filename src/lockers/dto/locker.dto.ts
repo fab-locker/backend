@@ -3,6 +3,5 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LockerDto {
   @ApiProperty()
-  @IsNumber()
   id: number;
 }
