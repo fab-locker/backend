@@ -9,14 +9,15 @@ export class LockersService {
   constructor(
     @InjectRepository(LockerEntity)
     private lockerRepository: Repository<LockerEntity>,
-  ) {}
+  ) {
+  }
 
   findAll(): Promise<LockerDto[]> {
-    return this.lockerRepository.find();
+    return this.lockerRepository.find({ relations: ['item'] });
   }
 
   findOne(id: number): Promise<LockerDto> {
-    return this.lockerRepository.findOne({ where: { id: id } });
+    return this.lockerRepository.findOne({ relations: ['item'], where: { id: id } });
   }
 
   create(locker: LockerDto): Promise<LockerDto> {
