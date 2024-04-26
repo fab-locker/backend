@@ -37,21 +37,23 @@ export class MqttService {
 
     this.client.on('message', async (topic, message) => {
       try{
-        console.log(message.toString())
-      const existingUserRfid = await this.usersRepository.findOne({where:[{rfid: message.toString()}]})
+        const mess = message.toString();
+        
+        console.log(mess)
+      const existingUserRfid = await this.usersRepository.findOne({where:[{rfid: mess}]})
       if(existingUserRfid){
         console.log('user found')
         console.log('la carte appartient à : ' + existingUserRfid.mail)
       }else{
         console.log('user not found')
       }
-      console.log('Received message:', topic, " : ", message.toString());
-      this.receivedMessage = message.toString();
+      console.log('Received message:', topic, " : ", mess);
+      this.receivedMessage = mess;
     } catch (error){
       console.error('Error while fetching user:', error);
     }
     });
-
+     
   }
 
   async testLockerDoor(id : number){

@@ -15,10 +15,13 @@ export class ItemsService {
 
 
   async getItems(item? : Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
-    try{
-    if(!item){
+    try{ 
+    console.log(item)
+    if(Object.keys(item).length > 0){
+      console.log("titi")
       return await this.itemRepository.findOne({ where: item });
     }else{
+      console.log("toto")
       return await this.itemRepository.find();
     }
   }catch(error){

@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 
 export class UsersDto {
-  @ApiProperty({ example: 12345678910 })
+  @ApiProperty({ example: "12 345 67 89" })
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   rfid: string;
 
   @ApiProperty({ example: false })
@@ -21,5 +21,6 @@ export class UsersDto {
   @ApiProperty({ example: 'example@student.junia.com' })
   @IsString()
   @IsEmail()
+  @IsNotEmpty()
   mail: string;
 }

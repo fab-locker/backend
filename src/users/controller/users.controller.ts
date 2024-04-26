@@ -37,7 +37,7 @@ export class UsersController {
   @Get()
   getUsers(@Query('id_rfid') id?: string, @Query('mail') mail?: string) {
     if (id) {
-      return this.usersService.findOne('id_rfid', id.toString());
+      return this.usersService.findOne('id_rfid', parseInt(id.toString()));
     } else if (mail) {
       return this.usersService.findOne('mail_junia', mail);
     } else {
