@@ -16,14 +16,11 @@ export class ItemsService {
 
   async getItems(item?: Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
     try {
-      console.log('item : ', item);
-      if (item) {
-        return await this.itemRepository.findOne({ where: item });
+      if (!(Object.keys(item).length == 0)) {
+        return await this.itemRepository.findOne({ relations: ['locker'], where: item });
       } else {
-        return await this.itemRepository
-          .createQueryBuilder('item')
-          .leftJoinAndSelect('item.locker', 'locker')
-          .getMany();
+        return await this.itemRepository.find({ relations: ['locker'] });
+
       }
     } catch (error) {
       console.error('Erreur lors de la récupération d\'un item : ', error);

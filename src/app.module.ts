@@ -16,7 +16,7 @@ import { MqttModule } from './mqtt/mqtt.module';
   imports: [
     AuthModule,
     UsersModule,
-    MqttModule,
+    // MqttModule,
     ItemsModule,
     LockersModule,
     ConfigModule.forRoot({ isGlobal: true }),
