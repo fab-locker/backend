@@ -14,13 +14,16 @@ export class ItemsService {
   ) {
   }
 
-
   async getItems(item?: Partial<BaseItemDto>): Promise<BaseItemDto[] | BaseItemDto | null> {
     try {
-      if (!item) {
+      console.log('item : ', item);
+      if (item) {
         return await this.itemRepository.findOne({ where: item });
       } else {
-        return await this.itemRepository.find();
+        return await this.itemRepository
+          .createQueryBuilder('item')
+          .leftJoinAndSelect('item.locker', 'locker')
+          .getMany();
       }
     } catch (error) {
       console.error('Erreur lors de la récupération d\'un item : ', error);
@@ -37,7 +40,7 @@ export class ItemsService {
     }
   }
 
-  async createItem(item: CreateItemDto): Promise<CreateItemDto | null> {
+  async createItem(item: CreateItemDto): Promise<CreateItemDto | null | ConflictException> {
     try {
       const busyLocker = await this.itemRepository.findOne({ where: [{ locker: item.locker }] });
       if (!busyLocker) {
@@ -45,7 +48,7 @@ export class ItemsService {
         await this.itemRepository.save(newItem);
         return this.itemRepository.create(item);
       } else {
-        throw new ConflictException('le casier indiqué n\'est pas disponible choisissez en un autre');
+        return new ConflictException('le casier indiqué n\'est pas disponible choisissez en un autre');
       }
     } catch (error) {
       console.error('Erreur lors de la récupération d\'un item :', error);
