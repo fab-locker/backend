@@ -12,9 +12,9 @@ export class MqttController {
 
 
   @ApiOperation({ summary: 'open the locker door' })
-  @Post('openLocker/:id')
+  @Get('openLocker/:id')
   openLocker(@Param('id') locker: number){
-    return this.openLocker(locker)
+    this.mqttService.openDoor(locker)
   }
 
   @ApiOperation({ summary: 'test if the locker door is open or closed' })
@@ -25,7 +25,7 @@ export class MqttController {
 
   @ApiOperation({ summary: 'turn on the light in the locker' })
   @Post('turnOnLight/:id/:turnOn')
-  turnOnLight(@Param('id') locker: number, @Param('turnOn') turnOn: boolean){
+  turnOnLight(@Param('id') locker: number, @Param('turnOn') turnOn: string){
       this.mqttService.turnOnOrOffLight(locker, turnOn)
     }
 

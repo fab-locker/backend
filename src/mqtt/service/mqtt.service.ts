@@ -1,7 +1,7 @@
 // mqtt.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository,  } from '@nestjs/typeorm';
-import { Console } from 'console';
+import { Console, error } from 'console';
 import mqtt, { IClientOptions } from 'mqtt';
 import { UsersEntity } from 'src/users/entity/users.entity';
 import { Repository } from 'typeorm';
@@ -57,13 +57,22 @@ export class MqttService {
   }
 
   async openDoor(id: number){
-    this.turnOnOrOffLight(id, true)
-    const topic = `box_pickup/casier${id}/open`
-    this.publishMessage(topic, "1")
+    this.client.publish(`box_pickup/casier${id}/open`, "1", {qos:2}, (error) => {
+      if(error){
+        console.error('publish error : ', error)
+      }
+    })
   }
+
+  
 
   async testLockerDoor(id : number){
     const topic = `box_pickup/casier${id}/test_door`
+    this.client.publish(topic, "1", {qos:2}, (error) => {
+      if(error){
+        console.error('publish error : ', error)
+      }
+    })
     this.publishMessage(topic ,  "1")
     this.client.on('message', (receivedTopic: string, message) =>{
     console.log("received topic " + receivedTopic)
@@ -75,21 +84,31 @@ export class MqttService {
     });
   }
 
-  async turnOnOrOffLight(id: number, turnOn: boolean){
-    console.log(turnOn)
-    if(turnOn){
-      console.log("toto")
-    this.publishMessage(`box_pickup/casier${id}/light`,"1")
-    }else{
-      console.log("tata")
-      this.publishMessage(`box_pickup/casier${id}/light`,"0")
-    }
+  async turnOnOrOffLight(id: number, turnOn: string): Promise<void> {
+    console.log(typeof turnOn);
+    if (turnOn === "1"  ) {
+      this.client.publish(`box_pickup/casier${id}/light`, "1", {qos:2}, (error) => {
+        if(error){
+          console.error('publish error : ', error)
+        }
+      })
+        } else {
+          this.client.publish(`box_pickup/casier${id}/light`, "0", {qos:2}, (error) => {
+            if(error){
+              console.error('publish error : ', error)
+            }
+          })    
+        }
   }
 
 
   async getWeight(id: number): Promise<string | null>{
     let received_message: string;
-    this.publishMessage(`box_pickup/casier${id}/weight`,"1")
+    this.client.publish(`box_pickup/casier${id}/weight`, "1", {qos:2}, (error) => {
+      if(error){
+        console.error('publish error : ', error)
+      }
+    })
     this.client.on('message', (topic: string, message) => {
       if(topic === `box_pickup/casier${id}/log_weight`){
         received_message = message.toString()
@@ -101,7 +120,11 @@ export class MqttService {
 
   async tare(id: number): Promise<string>{
     try{
-    this.publishMessage(`box_pickup/casier${id}/tare`,"1")
+      this.client.publish(`box_pickup/casier${id}/tare`, "1", {qos:2}, (error) => {
+        if(error){
+          console.error('publish error : ', error)
+        }
+      })
     this.client.on('message', (topic: string, message) => {
       if(topic === `box_pickup/casier${id}/log_tare`){
       console.log(message)
