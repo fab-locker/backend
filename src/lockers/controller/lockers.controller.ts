@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { LockersService } from '../service/lockers.service';
 import { LockerDto } from '../dto/locker.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { RoleGuard } from '../../auth/role/role.guard';
@@ -13,6 +13,7 @@ export class LockersController {
   constructor(private lockersService: LockersService) {
   }
 
+  @ApiOperation({ summary: 'Get all lockers', description: 'Retrieve all lockers.' })
   @Roles(Role.User)
   @UseGuards(JwtGuard, RoleGuard)
   @Get()
@@ -20,16 +21,20 @@ export class LockersController {
     return this.lockersService.findAll();
   }
 
+  @ApiOperation({ summary: 'Create locker', description: 'Create a new locker.' })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('add')
+  @ApiBody({ type: LockerDto })
+  @Post()
   create(@Body() locker: LockerDto): Promise<LockerDto> {
     return this.lockersService.create(locker);
   }
 
+  @ApiOperation({ summary: 'Delete locker', description: 'Delete a locker.' })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('delete')
+  @ApiBody({ type: LockerDto })
+  @Delete()
   delete(@Body() locker: LockerDto): Promise<LockerDto> {
     return this.lockersService.delete(locker);
   }
