@@ -13,24 +13,19 @@ export class CreateItemDto {
   name: string;
 
   @ApiProperty({ example: 'permet de mesurer une tension' })
-  // @IsNotEmpty({message: "description cannot be empty"})
   @IsString()
   @IsOptional()
   description?: string;
 
   @ApiProperty({ example: true })
-  // @IsNotEmpty({message: "availability cannot be empty"})
   @IsBoolean()
   availability: boolean = true;
 
   @ApiProperty({ example: 95 })
-  // @IsNotEmpty()
   @IsNumber()
   weight: number = 0;
 
   @ApiProperty({ example: 7 })
-  // @IsNotEmpty({message: "borrow cannot be empty"})
   @IsNumber()
   borrow_duration: number = 7;
-
 }
