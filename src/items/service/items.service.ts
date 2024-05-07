@@ -63,7 +63,7 @@ export class ItemsService {
       }
     } catch (error) {
       console.error('Erreur lors de la suppression d\'un item :', error);
-      return { statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Erreur lors de la suppression de l\'item' }
+      return { statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: error.message }
     }
   }
 
