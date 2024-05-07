@@ -9,11 +9,4 @@ import { Role } from './auth/role/role.enum';
 export class AppController {
   constructor(private readonly appService: AppService) {
   }
-
-  @Roles(Role.Admin)
-  @UseGuards(JwtGuard, RoleGuard)
-  @Get()
-  profile(@Req() req, @Res() res): string {
-    return res.status(HttpStatus.OK).json(req.user);
-  }
 }
