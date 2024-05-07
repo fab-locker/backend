@@ -56,6 +56,12 @@ export class MqttService {
      
   }
 
+  async openDoor(id: number){
+    this.turnOnOrOffLight(id, true)
+    const topic = `box_pickup/casier${id}/open`
+    this.publishMessage(topic, "1")
+  }
+
   async testLockerDoor(id : number){
     const topic = `box_pickup/casier${id}/test_door`
     this.publishMessage(topic ,  "1")

@@ -7,6 +7,7 @@ import {MqttModule} from './mqtt/mqtt.module';
 import {ConfigModule} from '@nestjs/config';
 import {UsersModule} from "./users/users.module";
 import { ItemsModule } from './items/items.module';
+import { HistoricModule } from './historic/historic.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { ItemsModule } from './items/items.module';
         MqttModule,
         ItemsModule,
         LockersModule,
+        HistoricModule,
         ConfigModule.forRoot(),
         TypeOrmModule.forRoot({
             type: 'mysql',

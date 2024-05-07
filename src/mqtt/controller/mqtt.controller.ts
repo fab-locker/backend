@@ -14,8 +14,7 @@ export class MqttController {
   @ApiOperation({ summary: 'open the locker door' })
   @Post('openLocker/:id')
   openLocker(@Param('id') locker: number){
-    this.mqttService.turnOnOrOffLight(locker, true)
-    return this.mqttService.publishMessage(`box_pickup/casier${locker}/open`,"1")
+    return this.openLocker(locker)
   }
 
   @ApiOperation({ summary: 'test if the locker door is open or closed' })
