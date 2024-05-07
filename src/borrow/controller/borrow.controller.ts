@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import {
   ApiBody,
   ApiConflictResponse,
@@ -13,6 +13,10 @@ import { BorrowEntity } from '../entity/borrow.entity';
 import { ItemsService } from '../../items/service/items.service';
 import { UsersService } from '../../users/service/users.service';
 import { ItemEntity } from '../../items/entity/items.entity';
+import { Roles } from '../../auth/roles/roles.decorator';
+import { Role } from '../../auth/role/role.enum';
+import { RoleGuard } from '../../auth/role/role.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard';
 
 @ApiTags('Borrows')
 @Controller('api/borrows')
@@ -26,6 +30,8 @@ export class BorrowController {
 
   @ApiOperation({ summary: 'Get all borrows' })
   @ApiOkResponse({ description: 'List of all borrows found successfully.', type: [BorrowEntity] })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Get()
   async getBorrows() {
     return this.borrowService.getBorrows();
@@ -35,6 +41,8 @@ export class BorrowController {
   @ApiOkResponse({ description: 'Borrow found successfully.', type: BorrowEntity })
   @ApiNotFoundResponse({ description: 'Borrow with specified ID not found.' })
   @ApiParam({ name: 'id', description: 'ID of the borrow to fetch', type: 'number' })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Get(':id')
   async getBorrow(@Param('id') id: number) {
     return this.borrowService.getBorrow(id);
@@ -52,6 +60,8 @@ export class BorrowController {
       },
     },
   })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Post()
   async createBorrow(
     @Body('userRfid') userRfid: number,
@@ -68,6 +78,8 @@ export class BorrowController {
   @ApiOkResponse({ description: 'Borrow returned successfully.', type: BorrowEntity })
   @ApiNotFoundResponse({ description: 'Borrow with specified ID not found.' })
   @ApiParam({ name: 'id', description: 'ID of the borrow to return', type: 'number' })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Put(':id/return')
   async returnBorrow(@Param('id') id: number) {
     const borrow = await this.borrowService.returnBorrow(id);
@@ -113,6 +125,8 @@ export class BorrowController {
       },
     },
   })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Put(':id')
   async updateBorrow(
     @Param('id') id: number,
@@ -132,6 +146,8 @@ export class BorrowController {
       example: { 'endDate': '2024-05-08T12:00:00' },
     },
   })
+  @Roles(Role.User)
+  @UseGuards(JwtGuard, RoleGuard)
   @Put(':id/endDate')
   async updateEndDate(
     @Param('id') id: number,
