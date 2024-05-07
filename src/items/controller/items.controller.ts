@@ -30,7 +30,7 @@ export class ItemsController {
   @ApiOkResponse({ description: 'Success', type: [CreateItemDto] })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('create')
+  @Post()
   async createItem(@Body() item: CreateItemDto): Promise<CreateItemDto | null | ConflictException> {
     return this.itemService.createItem(item);
   }
@@ -41,7 +41,7 @@ export class ItemsController {
   @ApiQuery({ name: 'id', type: 'number', required: true })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Patch('update/:id')
+  @Patch(':id')
   async updateItem(@Param('id') id: number, @Body() newItem: Partial<UpdateItemDto>): Promise<UpdateItemDto | null> {
     return this.itemService.updateItem(id, newItem);
   }
@@ -51,7 +51,7 @@ export class ItemsController {
   @ApiQuery({ name: 'id', type: 'number', required: true })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Delete('delete/:id')
+  @Delete(':id')
   async deleteItem(@Param('id') id: number): Promise<{ statusCode: number; message: string }> {
     return this.itemService.deleteItem(id);
   }

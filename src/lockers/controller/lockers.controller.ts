@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { LockersService } from '../service/lockers.service';
 import { LockerDto } from '../dto/locker.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -22,14 +22,14 @@ export class LockersController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('add')
+  @Post()
   create(@Body() locker: LockerDto): Promise<LockerDto> {
     return this.lockersService.create(locker);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
-  @Post('delete')
+  @Delete()
   delete(@Body() locker: LockerDto): Promise<LockerDto> {
     return this.lockersService.delete(locker);
   }
