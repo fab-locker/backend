@@ -3,7 +3,7 @@ import { LockerEntity } from '../../lockers/entity/locker.entity';
 
 @Entity('items')
 export class ItemEntity {
-  @PrimaryGeneratedColumn("increment")
+  @PrimaryGeneratedColumn()
   id: number;
 
   @OneToOne(() => LockerEntity, locker => locker.item)

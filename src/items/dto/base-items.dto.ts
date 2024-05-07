@@ -8,7 +8,7 @@ export class BaseItemDto {
   @IsNumber()
   readonly id: number;
 
-  @ApiProperty({ example: 6 })
+  @ApiProperty({ example: { id: 3 } })
   @IsNotEmpty({ message: 'id_locker cannot be empty' })
   locker: LockerEntity;
 

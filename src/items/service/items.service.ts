@@ -5,12 +5,15 @@ import { ItemEntity } from '../entity/items.entity';
 import { BaseItemDto } from '../dto/base-items.dto';
 import { UpdateItemDto } from '../dto/update-item.dto';
 import { CreateItemDto } from '../dto/create-item.dto';
+import { LockerEntity } from '../../lockers/entity/locker.entity';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(ItemEntity)
     private itemRepository: Repository<ItemEntity>,
+    @InjectRepository(LockerEntity)
+    private lockerRepository: Repository<LockerEntity>,
   ) {
   }
 
@@ -54,16 +57,27 @@ export class ItemsService {
 
   async deleteItem(id: number): Promise<{ statusCode: number; message: string }> {
     try {
-      const existingItem = await this.itemRepository.findOne({ where: [{ id: id }] });
+      const existingItem = await this.itemRepository.findOne({ where: { id: id } });
       if (!existingItem) {
-        throw new NotFoundException('l\'item sélectionné n\'existe pas');
-      } else {
-        await this.itemRepository.delete({ id: id });
-        return { statusCode: HttpStatus.OK, message: 'Item deleted successfuly' };
+        throw new NotFoundException('The selected item does not exist');
       }
+
+      // Trouver les casiers associés à l'élément à supprimer
+      const lockersToUpdate = await this.lockerRepository.find({ where: { item: existingItem } });
+
+      // Mettre à jour les casiers pour retirer les références à l'élément
+      await Promise.all(lockersToUpdate.map(locker => {
+        locker.item = null;
+        return this.lockerRepository.save(locker);
+      }));
+
+      // Supprimer l'élément
+      await this.itemRepository.remove(existingItem);
+
+      return { statusCode: HttpStatus.OK, message: 'Item deleted successfully' };
     } catch (error) {
-      console.error('Erreur lors de la suppression d\'un item :', error);
-      return { statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: error.message }
+      console.error('Error while deleting an item:', error);
+      return { statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: error.message };
     }
   }
 

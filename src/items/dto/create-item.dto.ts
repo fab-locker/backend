@@ -3,7 +3,7 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-val
 import { LockerEntity } from '../../lockers/entity/locker.entity';
 
 export class CreateItemDto {
-  @ApiProperty({ example: 6 })
+  @ApiProperty({ example: { id: 3 } })
   @IsNotEmpty({ message: 'Locker cannot be empty' })
   locker: LockerEntity;
 

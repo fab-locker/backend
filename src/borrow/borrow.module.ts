@@ -8,11 +8,13 @@ import { ItemsService } from '../items/service/items.service';
 import { ItemEntity } from '../items/entity/items.entity';
 import { UsersService } from '../users/service/users.service';
 import { UsersEntity } from '../users/entity/users.entity';
+import { LockersService } from '../lockers/service/lockers.service';
+import { LockerEntity } from '../lockers/entity/locker.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BorrowEntity]), TypeOrmModule.forFeature([ItemEntity]), TypeOrmModule.forFeature([UsersEntity])],
+  imports: [TypeOrmModule.forFeature([BorrowEntity]), TypeOrmModule.forFeature([ItemEntity]), TypeOrmModule.forFeature([UsersEntity]),TypeOrmModule.forFeature([LockerEntity])],
   controllers: [BorrowController],
-  providers: [BorrowService, ItemsService, UsersService],
+  providers: [BorrowService, ItemsService, UsersService, LockersService],
 })
 export class BorrowModule {
 }
