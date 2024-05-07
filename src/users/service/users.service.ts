@@ -16,11 +16,11 @@ export class UsersService {
   }
 
   findOneByEmail(email: string): Promise<UsersEntity | null> {
-    return this.usersRepository.findOneBy({ email });
+    return this.usersRepository.findOneBy({ email: email });
   }
 
   findOneByRfid(rfid: number): Promise<UsersEntity | null> {
-    return this.usersRepository.findOneBy({ rfid });
+    return this.usersRepository.findOneBy({ rfid: rfid });
   }
 
   create(user: UsersEntity): Promise<UsersEntity> {

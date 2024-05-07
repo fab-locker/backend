@@ -20,7 +20,6 @@ export class ItemsService {
         return await this.itemRepository.findOne({ relations: ['locker'], where: item });
       } else {
         return await this.itemRepository.find({ relations: ['locker'] });
-
       }
     } catch (error) {
       console.error('Erreur lors de la récupération d\'un item : ', error);
@@ -67,36 +66,5 @@ export class ItemsService {
       return { statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Erreur lors de la suppression de l\'item' }
     }
   }
-
-  //   /**
-  //  * Check if a user exists with the same mail or rfid
-  //  * @param item
-  //  * @returns {Promise<boolean>}
-  //  */
-  //   async doUserExists(item: Partial<createItemDto>): Promise<boolean> {
-  //     let existingItem: createItemDto;
-
-  //     // If the mail or rfid is passed in the body, it means it is a creation or an update of mail or rfid, so we need to check if the user exists
-  //     // Otherwise, it means it is exclusively an update of role or password, so no need to check if the user exists
-  //     if (item.name) {
-  //       existingItem = await this.itemRepository.findOne({
-  //         where: [{ mail: user.mail }, { rfid: user.rfid }],
-  //       });
-  //       if (existingUser) {
-  //         let field: string;
-  //         if (existingUser.mail === user.mail) {
-  //           field = 'e-mail';
-  //         } else {
-  //           field = 'badge';
-  //         }
-  //         throw new BadRequestException(
-  //           `Un utilisateur avec le même ${field} existe déjà.`,
-  //         );
-  //       }
-  //     } else {
-  //       return false;
-  //     }
-  //   }
-
 
 }

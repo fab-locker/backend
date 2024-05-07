@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { ItemsModule } from './items/items.module';
 import { MqttModule } from './mqtt/mqtt.module';
+import { BorrowModule } from './borrow/borrow.module';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { MqttModule } from './mqtt/mqtt.module';
     UsersModule,
     // MqttModule,
     ItemsModule,
+    BorrowModule,
     LockersModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
