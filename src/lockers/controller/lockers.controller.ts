@@ -21,7 +21,7 @@ export class LockersController {
     return this.lockersService.findAll();
   }
 
-  @ApiOperation({ summary: 'Create locker', description: 'Create a new locker.' })
+  @ApiOperation({ summary: 'Create locker [Admin]', description: 'Create a new locker.' })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
   @ApiBody({ type: LockerDto })
@@ -30,7 +30,7 @@ export class LockersController {
     return this.lockersService.create(locker);
   }
 
-  @ApiOperation({ summary: 'Delete locker', description: 'Delete a locker.' })
+  @ApiOperation({ summary: 'Delete locker [Admin]', description: 'Delete a locker.' })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
   @ApiBody({ type: LockerDto })

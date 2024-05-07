@@ -24,7 +24,7 @@ export class ItemsController {
     return this.itemService.getItems(item);
   }
 
-  @ApiOperation({ summary: 'Create item (with optional filters)' })
+  @ApiOperation({ summary: 'Create item (with optional filters) [Admin]' })
   @ApiOkResponse({ description: 'Success', type: [CreateItemDto] })
   @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
@@ -34,7 +34,7 @@ export class ItemsController {
     return this.itemService.createItem(item);
   }
 
-  @ApiOperation({ summary: 'Update item (with optional filters)' })
+  @ApiOperation({ summary: 'Update item (with optional filters) [Admin]' })
   @ApiOkResponse({ description: 'Success', type: [UpdateItemDto] })
   @ApiQuery({ name: 'id', type: 'number', required: true })
   @Roles(Role.Admin)
@@ -45,7 +45,7 @@ export class ItemsController {
     return this.itemService.updateItem(id, newItem);
   }
 
-  @ApiOperation({ summary: 'Delete item' })
+  @ApiOperation({ summary: 'Delete item [Admin]' })
   @ApiOkResponse({ description: 'Success' })
   @ApiQuery({ name: 'id', type: 'number', required: true })
   @Roles(Role.Admin)

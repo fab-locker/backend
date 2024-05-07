@@ -87,7 +87,7 @@ export class BorrowController {
     return borrow;
   }
 
-  @ApiOperation({ summary: 'Update borrow by ID' })
+  @ApiOperation({ summary: 'Update borrow by ID [Admin]' })
   @ApiOkResponse({ description: 'Borrow updated successfully.', type: BorrowEntity })
   @ApiNotFoundResponse({ description: 'Borrow with specified ID not found.' })
   @ApiParam({ name: 'id', description: 'ID of the borrow to update', type: 'number' })
@@ -125,7 +125,7 @@ export class BorrowController {
       },
     },
   })
-  @Roles(Role.User)
+  @Roles(Role.Admin)
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':id')
   async updateBorrow(
