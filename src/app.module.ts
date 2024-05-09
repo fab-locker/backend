@@ -12,6 +12,7 @@ import { ItemsModule } from './items/items.module';
 import { HistoricModule } from './historic/historic.module';
 import { MqttModule } from './mqtt/mqtt.module';
 import { BorrowModule } from './borrow/borrow.module';
+import { WebsocketsGatewayModule } from './rfid_websocket/websocket.module';
 
 
 @Module({
@@ -34,6 +35,7 @@ import { BorrowModule } from './borrow/borrow.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    WebsocketsGatewayModule,
   ],
   controllers: [AppController],
   providers: [
