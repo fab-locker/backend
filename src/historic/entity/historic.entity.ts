@@ -17,7 +17,7 @@ export class HistoricEntity{
     @Column()
     borrow_date: Date
 
-    @Column()
-    render_date: Date
+    @Column({nullable: true})
+    render_date?: Date
 
 }

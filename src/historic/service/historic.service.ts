@@ -12,16 +12,17 @@ export class HistoricService {
     private historicRepository: Repository<HistoricEntity>,
   ) {}
 
-  async getHistoric(id_locker: number): Promise<HistoricEntity> {
+  async getHistoric(id_locker: number): Promise<HistoricEntity[]> {
     try{ 
-      return await this.historicRepository.findOne({ where: { id_locker: id_locker } });
-  }catch(error){
+        console.log(id_locker)
+        return await this.historicRepository.find({ where: { id_locker } });
+    }catch(error){
     console.error("Erreur lors de la récupération de l'historique : ",  error)
     return null;
   }
   }
 
-  async addHistoric(historic: addHistoricDto): Promise<HistoricEntity | boolean | null>{
+  async addHistoric(historic: Partial<addHistoricDto>): Promise<HistoricEntity | boolean | null>{
     try{
         const newHistoric = this.historicRepository.create(historic)
         return await this.historicRepository.save(newHistoric)
