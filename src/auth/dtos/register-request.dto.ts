@@ -1,28 +1,21 @@
+import { Role } from '../role/role.enum';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  Matches,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsString, Matches } from 'class-validator';
 
-export class BaseUsersDto {
+export class RegisterRequestDto {
   @ApiProperty({ example: 12345678910 })
   @IsNotEmpty()
-  @IsString()
   rfid: string;
 
   @ApiProperty({ example: false })
   @IsNotEmpty()
-  @IsBoolean()
-  admin: boolean;
+  @IsString()
+  role: Role;
 
   @ApiProperty({ example: 'exemple@student.junia.com' })
   @IsString()
   @IsEmail()
-  mail: string;
+  email: string;
 
   @ApiProperty({ example: 'Password123' })
   @IsString()
@@ -31,4 +24,4 @@ export class BaseUsersDto {
       'Le mot de passe doit contenir au moins 8 caractères, une minuscule, une majuscule et un chiffre.',
   })
   password: string;
-}
+};
