@@ -55,7 +55,7 @@ export class BorrowController {
     schema: {
       type: 'object',
       properties: {
-        userRfid: { type: 'number', example: 12345678913 },
+        userRfid: { type: 'string', example: 12345678913 },
         itemId: { type: 'number', example: 1 },
       },
     },
