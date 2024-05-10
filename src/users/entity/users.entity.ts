@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { Role } from '../../auth/role/role.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class UsersEntity {
@@ -12,6 +13,6 @@ export class UsersEntity {
   @Column({ nullable: false })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   password: string;
 }
