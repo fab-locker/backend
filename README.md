@@ -36,13 +36,13 @@ $ pnpm install
 
 ```bash
 # development
-$ pnpm run start
+$ pnpm start
 
-# watch mode
-$ pnpm run start:dev
+# development with watch mode
+$ pnpm dev
 
 # production mode
-$ pnpm run start:prod
+$ pnpm prod
 ```
 
 ## Test
