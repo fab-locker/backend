@@ -4,9 +4,6 @@ import { Repository } from 'typeorm';
 import { BorrowEntity } from '../entity/borrow.entity';
 import { ItemEntity } from '../../items/entity/items.entity';
 import { UsersEntity } from '../../users/entity/users.entity';
-import { Role } from '../../auth/role/role.enum';
-import { Roles } from '../../auth/roles/roles.decorator';
-import { RoleGuard } from '../../auth/role/role.guard';
 
 @Injectable()
 export class BorrowService {
@@ -17,7 +14,7 @@ export class BorrowService {
   }
 
   async getBorrows() {
-    return this.borrowRepository.find();
+    return this.borrowRepository.find({ relations: ['item', 'user'] });
   }
 
   async getBorrow(id: number) {
