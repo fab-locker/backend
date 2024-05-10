@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsString, Matches } from 'class-validato
 export class RegisterRequestDto {
   @ApiProperty({ example: 12345678910 })
   @IsNotEmpty()
-  rfid: number;
+  rfid: string;
 
   @ApiProperty({ example: false })
   @IsNotEmpty()

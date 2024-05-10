@@ -64,7 +64,7 @@ export class BorrowController {
   @UseGuards(JwtGuard, RoleGuard)
   @Post()
   async createBorrow(
-    @Body('userRfid') userRfid: number,
+    @Body('userRfid') userRfid: string,
     @Body('itemId') itemId: number,
   ) {
     const item = await this.itemService.getItems({ id: itemId }) as ItemEntity;

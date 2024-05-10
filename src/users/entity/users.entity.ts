@@ -1,11 +1,10 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { Role } from '../../auth/role/role.enum';
-import { Exclude } from 'class-transformer';
+import { Role } from '../../auth/role/role.enum'
 
 @Entity('users')
 export class UsersEntity {
-  @PrimaryColumn({ type: 'bigint' })
-  rfid: number;
+  @PrimaryColumn()
+  rfid: string;
 
   @Column({ nullable: false })
   role: Role;

@@ -12,8 +12,8 @@ import { Role } from '../../auth/role/role.enum';
 export class CreateUsersDto {
   @ApiProperty({ example: 12345678910 })
   @IsNotEmpty()
-  @IsNumber()
-  rfid: number;
+  @IsString()
+  rfid: string;
 
   @ApiProperty({ example: false })
   @IsNotEmpty()

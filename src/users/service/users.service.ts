@@ -19,7 +19,7 @@ export class UsersService {
     return this.usersRepository.findOneBy({ email: email });
   }
 
-  findOneByRfid(rfid: number): Promise<UsersEntity | null> {
+  findOneByRfid(rfid: string): Promise<UsersEntity | null> {
     return this.usersRepository.findOneBy({ rfid: rfid });
   }
 
@@ -27,7 +27,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  update(rfid: number, userInformation: Partial<UsersEntity>): Promise<UpdateResult> {
+  update(rfid: string, userInformation: Partial<UsersEntity>): Promise<UpdateResult> {
     return this.usersRepository.update(rfid, userInformation);
   }
 

@@ -26,7 +26,7 @@ export class UsersController {
   @ApiQuery({ name: 'id_rfid', type: 'number', required: false })
   @ApiQuery({ name: 'email', type: 'string', required: false })
   @Get()
-  getUsers(@Request() req, @Query('id_rfid') id?: number, @Query('email') email?: string) {
+  getUsers(@Request() req, @Query('id_rfid') id?: string, @Query('email') email?: string) {
     const accessTokenPayload: AccessTokenPayload =
       req.user as AccessTokenPayload;
     if (id) {
@@ -75,10 +75,10 @@ export class UsersController {
     },
   })
   @ApiBody({ type: UpdateUsersDto })
-  @ApiParam({ name: 'rfid', type: 'number' })
+  @ApiParam({ name: 'rfid', type: 'string' })
   @Patch(':rfid')
   async updateUser(
-    @Param('rfid') rfid: number,
+    @Param('rfid') rfid: string,
     @Body() user: Partial<UpdateUsersDto>,
   ) {
     return this.usersService.update(rfid, user);
@@ -103,7 +103,7 @@ export class UsersController {
       },
     },
   })
-  @ApiParam({ name: 'rfid', type: 'number' })
+  @ApiParam({ name: 'rfid', type: 'string' })
   @Delete(':rfid')
   async deleteUser(
     @Param('rfid') rfid: number,
