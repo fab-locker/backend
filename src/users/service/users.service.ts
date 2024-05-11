@@ -19,6 +19,14 @@ export class UsersService {
     return this.usersRepository.findOneBy({ email: email });
   }
 
+  findOneByEmailWithPassword(email: string): Promise<UsersEntity> {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne();
+  }
+
   findOneByRfid(rfid: string): Promise<UsersEntity | null> {
     return this.usersRepository.findOneBy({ rfid: rfid });
   }

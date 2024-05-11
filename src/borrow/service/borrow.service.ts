@@ -18,7 +18,7 @@ export class BorrowService {
   }
 
   async getBorrow(id: number) {
-    return this.borrowRepository.findOne({ where: { id } });
+    return this.borrowRepository.findOne({ where: { id }, relations: ['item', 'user'] });
   }
 
   async createBorrow(user: UsersEntity, item: ItemEntity) {
