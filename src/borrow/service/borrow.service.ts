@@ -55,7 +55,7 @@ export class BorrowService {
       throw new NotFoundException(`Le casier avec l'ID ${lockerId} n'a pas d'emprunt.`);
     }
     const borrowId = borrow.id;
-    await this.borrowRepository.update(borrowId, { returnDate: new Date() });
+    return await this.borrowRepository.update(borrowId, { returnDate: new Date() });
   }
 
   private calculateEndDate(startDate: Date, durationInDays: number): Date {

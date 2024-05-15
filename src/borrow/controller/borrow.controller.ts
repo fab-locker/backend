@@ -82,10 +82,12 @@ export class BorrowController {
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':id/return')
   async returnBorrow(@Param('id') id: number) {
-    const borrow = await this.borrowService.returnBorrow(id);
-    await this.itemService.updateItem(id, { availability: true });
-    await this.borrowService
-    return borrow;
+    const borrow = await this.borrowService.getBorrowByLockerId(id);
+    const itemId = borrow.item.id;
+    console.log(itemId);
+    await this.borrowService.returnBorrow(id);
+    await this.itemService.updateItem(itemId, { availability: true });
+    return { message: 'Borrow returned successfully.' };
   }
 
   @ApiOperation({ summary: 'Update borrow by ID [Admin]' })
