@@ -17,8 +17,13 @@ export class BorrowService {
     return this.borrowRepository.find({ relations: ['item', 'user'] });
   }
 
-  async getBorrow(id: number) {
-    return this.borrowRepository.findOne({ where: { id }, relations: ['item', 'user'] });
+  async getBorrowByLockerId(lockerId: number): Promise<BorrowEntity> {
+    return await this.borrowRepository
+      .createQueryBuilder('borrow')
+      .innerJoinAndSelect('borrow.item', 'item')
+      .innerJoinAndSelect('item.locker', 'locker')
+      .where(`locker.id = ${lockerId}`)
+      .getOne();
   }
 
   async createBorrow(user: UsersEntity, item: ItemEntity) {
@@ -42,13 +47,13 @@ export class BorrowService {
     }
   }
 
-  async returnBorrow(borrowId: number) {
-    const borrow = await this.getBorrow(borrowId);
+  async returnBorrow(lockerId: number) {
+    const borrow = await this.getBorrowByLockerId(lockerId);
     if (!borrow) {
-      throw new NotFoundException(`L'emprunt avec l'ID ${borrowId} n'existe pas.`);
+      throw new NotFoundException(`Le casier avec l'ID ${lockerId} n'a pas d'emprunt.`);
     }
 
-    await this.borrowRepository.update(borrowId, { returnDate: new Date() });
+    await this.borrowRepository.update(lockerId, { returnDate: new Date() });
   }
 
   private calculateEndDate(startDate: Date, durationInDays: number): Date {
@@ -62,7 +67,7 @@ export class BorrowService {
   }
 
   async updateEndDate(id: number, newEndDate: Date) {
-    const borrow = await this.getBorrow(id);
+    const borrow = await this.getBorrowByLockerId(id);
     if (!borrow) {
       throw new NotFoundException(`L'emprunt avec l'ID ${id} n'existe pas.`);
     }

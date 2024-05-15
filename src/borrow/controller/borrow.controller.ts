@@ -43,9 +43,9 @@ export class BorrowController {
   @ApiParam({ name: 'id', description: 'ID of the borrow to fetch', type: 'number' })
   @Roles(Role.User)
   @UseGuards(JwtGuard, RoleGuard)
-  @Get(':id')
-  async getBorrow(@Param('id') id: number) {
-    return this.borrowService.getBorrow(id);
+  @Get(':lockerId')
+  async getBorrowByLocker(@Param('lockerId') lockerId: number) {
+    return this.borrowService.getBorrowByLockerId(lockerId);
   }
 
   @ApiOperation({ summary: 'Create a new borrow' })
