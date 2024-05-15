@@ -20,6 +20,7 @@ export class BorrowService {
   async getBorrowByLockerId(lockerId: number): Promise<BorrowEntity> {
     return await this.borrowRepository
       .createQueryBuilder('borrow')
+      .innerJoinAndSelect('borrow.user', 'user')
       .innerJoinAndSelect('borrow.item', 'item')
       .innerJoinAndSelect('item.locker', 'locker')
       .where(`locker.id = ${lockerId}`)
