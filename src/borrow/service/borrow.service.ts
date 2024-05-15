@@ -24,6 +24,7 @@ export class BorrowService {
       .innerJoinAndSelect('borrow.item', 'item')
       .innerJoinAndSelect('item.locker', 'locker')
       .where(`locker.id = ${lockerId}`)
+      .andWhere('borrow.returnDate IS NULL')
       .getOne();
   }
 
@@ -53,8 +54,8 @@ export class BorrowService {
     if (!borrow) {
       throw new NotFoundException(`Le casier avec l'ID ${lockerId} n'a pas d'emprunt.`);
     }
-
-    await this.borrowRepository.update(lockerId, { returnDate: new Date() });
+    const borrowId = borrow.id;
+    await this.borrowRepository.update(borrowId, { returnDate: new Date() });
   }
 
   private calculateEndDate(startDate: Date, durationInDays: number): Date {

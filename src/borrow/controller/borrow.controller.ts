@@ -84,6 +84,7 @@ export class BorrowController {
   async returnBorrow(@Param('id') id: number) {
     const borrow = await this.borrowService.returnBorrow(id);
     await this.itemService.updateItem(id, { availability: true });
+    await this.borrowService
     return borrow;
   }
 
@@ -155,4 +156,5 @@ export class BorrowController {
   ) {
     return this.borrowService.updateEndDate(id, endDate);
   }
+
 }

@@ -1,4 +1,13 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UsersEntity } from '../../users/entity/users.entity';
 import { ItemEntity } from '../../items/entity/items.entity';
 
@@ -7,11 +16,11 @@ export class BorrowEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @OneToOne(() => ItemEntity)
+  @ManyToOne(() => ItemEntity)
   @JoinColumn()
   item: ItemEntity;
 
-  @OneToOne(() => UsersEntity)
+  @ManyToOne(() => UsersEntity)
   @JoinColumn()
   user: UsersEntity;
 
