@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import {
   ApiBody,
   ApiConflictResponse,
@@ -81,10 +81,15 @@ export class BorrowController {
   @Roles(Role.User)
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':id/return')
-  async returnBorrow(@Param('id') id: number) {
+  async returnBorrow(@Param('id') id: number, @Request() req) {
     const borrow = await this.borrowService.getBorrowByLockerId(id);
     const itemId = borrow.item.id;
-    console.log(itemId);
+    const jwtPayload = req.user;
+
+    if (jwtPayload.rfid !== borrow.user.rfid && jwtPayload.role !== Role.Admin) {
+      throw new ForbiddenException('Seul l\'emprunteur ou un administrateur peut retourner l\'emprunt.');
+    }
+
     await this.borrowService.returnBorrow(id);
     await this.itemService.updateItem(itemId, { availability: true });
     return { message: 'Borrow returned successfully.' };
