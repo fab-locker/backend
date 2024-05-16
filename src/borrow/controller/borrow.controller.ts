@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import {
   ApiBody,
   ApiConflictResponse,
@@ -43,9 +43,9 @@ export class BorrowController {
   @ApiParam({ name: 'id', description: 'ID of the borrow to fetch', type: 'number' })
   @Roles(Role.User)
   @UseGuards(JwtGuard, RoleGuard)
-  @Get(':id')
-  async getBorrow(@Param('id') id: number) {
-    return this.borrowService.getBorrow(id);
+  @Get(':lockerId')
+  async getBorrowByLocker(@Param('lockerId') lockerId: number) {
+    return this.borrowService.getBorrowByLockerId(lockerId);
   }
 
   @ApiOperation({ summary: 'Create a new borrow' })
@@ -55,7 +55,7 @@ export class BorrowController {
     schema: {
       type: 'object',
       properties: {
-        userRfid: { type: 'number', example: 12345678913 },
+        userRfid: { type: 'string', example: 12345678913 },
         itemId: { type: 'number', example: 1 },
       },
     },
@@ -81,10 +81,18 @@ export class BorrowController {
   @Roles(Role.User)
   @UseGuards(JwtGuard, RoleGuard)
   @Put(':id/return')
-  async returnBorrow(@Param('id') id: number) {
-    const borrow = await this.borrowService.returnBorrow(id);
-    await this.itemService.updateItem(id, { availability: true });
-    return borrow;
+  async returnBorrow(@Param('id') id: number, @Request() req) {
+    const borrow = await this.borrowService.getBorrowByLockerId(id);
+    const itemId = borrow.item.id;
+    const jwtPayload = req.user;
+
+    if (jwtPayload.rfid !== borrow.user.rfid && jwtPayload.role !== Role.Admin) {
+      throw new ForbiddenException('Seul l\'emprunteur ou un administrateur peut retourner l\'emprunt.');
+    }
+
+    await this.borrowService.returnBorrow(id);
+    await this.itemService.updateItem(itemId, { availability: true });
+    return { message: 'Borrow returned successfully.' };
   }
 
   @ApiOperation({ summary: 'Update borrow by ID [Admin]' })
@@ -155,4 +163,5 @@ export class BorrowController {
   ) {
     return this.borrowService.updateEndDate(id, endDate);
   }
+
 }

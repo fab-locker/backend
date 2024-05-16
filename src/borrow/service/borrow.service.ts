@@ -4,9 +4,6 @@ import { Repository } from 'typeorm';
 import { BorrowEntity } from '../entity/borrow.entity';
 import { ItemEntity } from '../../items/entity/items.entity';
 import { UsersEntity } from '../../users/entity/users.entity';
-import { Role } from '../../auth/role/role.enum';
-import { Roles } from '../../auth/roles/roles.decorator';
-import { RoleGuard } from '../../auth/role/role.guard';
 
 @Injectable()
 export class BorrowService {
@@ -17,11 +14,18 @@ export class BorrowService {
   }
 
   async getBorrows() {
-    return this.borrowRepository.find();
+    return this.borrowRepository.find({ relations: ['item', 'user'] });
   }
 
-  async getBorrow(id: number) {
-    return this.borrowRepository.findOne({ where: { id } });
+  async getBorrowByLockerId(lockerId: number): Promise<BorrowEntity> {
+    return await this.borrowRepository
+      .createQueryBuilder('borrow')
+      .innerJoinAndSelect('borrow.user', 'user')
+      .innerJoinAndSelect('borrow.item', 'item')
+      .innerJoinAndSelect('item.locker', 'locker')
+      .where(`locker.id = ${lockerId}`)
+      .andWhere('borrow.returnDate IS NULL')
+      .getOne();
   }
 
   async createBorrow(user: UsersEntity, item: ItemEntity) {
@@ -45,13 +49,13 @@ export class BorrowService {
     }
   }
 
-  async returnBorrow(borrowId: number) {
-    const borrow = await this.getBorrow(borrowId);
+  async returnBorrow(lockerId: number) {
+    const borrow = await this.getBorrowByLockerId(lockerId);
     if (!borrow) {
-      throw new NotFoundException(`L'emprunt avec l'ID ${borrowId} n'existe pas.`);
+      throw new NotFoundException(`Le casier avec l'ID ${lockerId} n'a pas d'emprunt.`);
     }
-
-    await this.borrowRepository.update(borrowId, { returnDate: new Date() });
+    const borrowId = borrow.id;
+    return await this.borrowRepository.update(borrowId, { returnDate: new Date() });
   }
 
   private calculateEndDate(startDate: Date, durationInDays: number): Date {
@@ -65,7 +69,7 @@ export class BorrowService {
   }
 
   async updateEndDate(id: number, newEndDate: Date) {
-    const borrow = await this.getBorrow(id);
+    const borrow = await this.getBorrowByLockerId(id);
     if (!borrow) {
       throw new NotFoundException(`L'emprunt avec l'ID ${id} n'existe pas.`);
     }

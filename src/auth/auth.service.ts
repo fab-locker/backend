@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<UsersEntity> {
-    const user: UsersEntity = await this.usersService.findOneByEmail(email);
+    const user: UsersEntity = await this.usersService.findOneByEmailWithPassword(email);
     if (!user) {
       throw new BadRequestException('User not found');
     }
