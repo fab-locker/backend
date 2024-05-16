@@ -12,7 +12,7 @@ import { ItemsModule } from './items/items.module';
 import { HistoricModule } from './historic/historic.module';
 import { MqttModule } from './mqtt/mqtt.module';
 import { BorrowModule } from './borrow/borrow.module';
-
+import { RfidtModule } from './rfid/rfid.module';
 
 @Module({
   imports: [
@@ -23,6 +23,7 @@ import { BorrowModule } from './borrow/borrow.module';
     ItemsModule,
     BorrowModule,
     LockersModule,
+    RfidtModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',

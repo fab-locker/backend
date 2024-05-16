@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository,  } from '@nestjs/typeorm';
 import { Console, error } from 'console';
 import mqtt, { IClientOptions } from 'mqtt';
+import { Subject } from 'rxjs';
 import { UsersEntity } from 'src/users/entity/users.entity';
 import { Repository } from 'typeorm';
 
@@ -11,6 +12,7 @@ export class MqttService {
   private client: mqtt.MqttClient;
   private receivedMessage: string;
 
+  private rfidScan$ = new Subject<boolean>();
 
   constructor(    
     @InjectRepository(UsersEntity)
@@ -43,9 +45,10 @@ export class MqttService {
       const existingUserRfid = await this.usersRepository.findOne({where:[{rfid: mess}]})
       if(existingUserRfid){
         console.log('user found')
-        // console.log('la carte appartient à : ' + existingUserRfid.mail)
+        this.rfidScan$.next(true); 
       }else{
         console.log('user not found')
+        this.rfidScan$.next(false); 
       }
       console.log('Received message:', topic, " : ", mess);
       this.receivedMessage = mess;
@@ -53,7 +56,12 @@ export class MqttService {
       console.error('Error while fetching user:', error);
     }
     });
-     
+    
+    this.rfidScan$.subscribe(value => {
+      console.log(`rfidScan$ value: ${value}`);
+    });
+    
+
   }
 
   async openDoor(id: number){
@@ -65,6 +73,11 @@ export class MqttService {
   }
 
   
+
+  getRfidScanObservable() {
+    console.log(this.rfidScan$.asObservable())
+    return this.rfidScan$.asObservable();
+  }
 
   async testLockerDoor(id : number){
     const topic = `box_pickup/casier${id}/test_door`
