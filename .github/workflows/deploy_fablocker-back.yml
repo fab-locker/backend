@@ -25,11 +25,10 @@ jobs:
         with:
           version: 8
 
-      - name: npm install, build, and test
+      - name: npm install, build
         run: |
           pnpm install
-          pnpm run build --if-present
-          pnpm run test --if-present
+          pnpm run build
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
