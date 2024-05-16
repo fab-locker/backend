@@ -35,7 +35,6 @@ import { RfidtModule } from './rfid/rfid.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    WebsocketsGatewayModule,
   ],
   controllers: [AppController],
   providers: [
