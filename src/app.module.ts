@@ -12,8 +12,7 @@ import { ItemsModule } from './items/items.module';
 import { HistoricModule } from './historic/historic.module';
 import { MqttModule } from './mqtt/mqtt.module';
 import { BorrowModule } from './borrow/borrow.module';
-import { WebsocketsGatewayModule } from './rfid_websocket/websocket.module';
-
+import { RfidtModule } from './rfid/rfid.module';
 
 @Module({
   imports: [
@@ -24,6 +23,7 @@ import { WebsocketsGatewayModule } from './rfid_websocket/websocket.module';
     ItemsModule,
     BorrowModule,
     LockersModule,
+    RfidtModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',

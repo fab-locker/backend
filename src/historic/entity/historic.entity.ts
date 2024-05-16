@@ -1,18 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { LockerEntity } from "src/lockers/entity/locker.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity('historic')
 export class HistoricEntity{
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @OneToOne(() => LockerEntity)
+    @JoinColumn()
     id_locker: number
+
+    @Column()
+    item_id: number
 
     @Column()
     object_name: string
 
     @Column()
     email: string
+
 
     @Column()
     borrow_date: Date
